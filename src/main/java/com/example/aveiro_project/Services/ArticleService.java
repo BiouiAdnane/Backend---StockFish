@@ -10,5 +10,5 @@ public interface ArticleService {
     public List<Article> getListArticle();
     public Article findArticle(int id);
     public void deleteArticle(int id);
-    public Article updateArticle(int id , Article article) throws ArticleNotFoundException;
+    public Article updateArticle(Article article) throws ArticleNotFoundException;
 }
