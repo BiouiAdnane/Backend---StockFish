@@ -2,6 +2,7 @@ package com.example.aveiro_project;
 
 import com.example.aveiro_project.Entities.Article;
 import com.example.aveiro_project.Entities.Depot;
+import com.example.aveiro_project.Entities.Operation;
 import com.example.aveiro_project.Entities.Personne;
 import com.example.aveiro_project.Enums.*;
 import com.example.aveiro_project.Repository.ArticleRepository;
@@ -15,6 +16,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -47,6 +49,8 @@ public class AveiroProjectApplication {
 				personneRepository.save(personne);
 
 			});
+//			LES ARTICLES
+
 			Article Joly =new Article();
 			Joly.setIngredient(Ingredient.Huile_Olive);
 			Joly.setNature(Nature.Maquereaus);
@@ -88,7 +92,6 @@ public class AveiroProjectApplication {
 			depotEmballage.setQuantiteActuelle(0);
 			depotRepository.save(depotEmballage);
 
-
 			Depot depotPrFini =new Depot();
 			depotPrFini.setNom_Depot("Depot Produit Fini");
 			depotPrFini.setQauntiteMax(100000);
@@ -97,6 +100,49 @@ public class AveiroProjectApplication {
 			depotPrFini.setNbrMaxRangee(20);
 			depotPrFini.setQuantiteActuelle(0);
 			depotRepository.save(depotPrFini);
+
+
+//			LES OPERATIONS
+			Operation operation1=new Operation();
+			operation1.setQuantite(5000);
+			operation1.setAllee(2);
+			operation1.setRangee(5);
+			operation1.setNiveau(4);
+			operation1.setNLot("C0045");
+			operation1.setTypeOpr("Entrée");
+			operation1.setDateOpertaion(new Date());
+			operationRepository.save(operation1);
+
+			Operation operation2=new Operation();
+			operation2.setQuantite(2500);
+			operation2.setAllee(2);
+			operation2.setRangee(16);
+			operation2.setNiveau(4);
+			operation2.setNLot("C0045");
+			operation2.setTypeOpr("Sortie");
+			operation2.setDateOpertaion(new Date());
+			operationRepository.save(operation2);
+
+			Operation operation3=new Operation();
+			operation3.setQuantite(2300);
+			operation3.setAllee(7);
+			operation3.setRangee(12);
+			operation3.setNiveau(2);
+			operation3.setNLot("C0196");
+			operation3.setTypeOpr("Entrée");
+			operation3.setDateOpertaion(new Date());
+			operationRepository.save(operation3);
+
+			Operation operation4=new Operation();
+			operation4.setQuantite(300);
+			operation4.setAllee(1);
+			operation4.setRangee(1);
+			operation4.setNiveau(5);
+			operation4.setNLot("C0296");
+			operation4.setTypeOpr("Entrée");
+			operation4.setDateOpertaion(new Date());
+			operationRepository.save(operation4);
+
 
 
 		};

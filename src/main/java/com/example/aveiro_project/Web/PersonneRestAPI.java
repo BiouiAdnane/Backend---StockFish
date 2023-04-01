@@ -10,9 +10,9 @@ import java.util.List;
 @RestController
 @CrossOrigin("*")
 
-public class AveiroRestAPI {
+public class PersonneRestAPI {
     private PersonneService personneService;
-    public AveiroRestAPI(PersonneService personneService){this.personneService=personneService;}
+    public PersonneRestAPI(PersonneService personneService){this.personneService=personneService;}
 
     @PostMapping("/personnes")
     public Personne savePersonne(@RequestBody Personne personne){
@@ -25,8 +25,8 @@ public class AveiroRestAPI {
     }
 
     @GetMapping("/personnes/{personneId}")
-    public Personne getPersonne(@PathVariable String personneId) throws PersonneNotFoundException {
-        return personneService.getPersonneId(Integer.parseInt(personneId));
+    public Personne getPersonne(@PathVariable int personneId) throws PersonneNotFoundException {
+        return personneService.getPersonneId(personneId);
     }
 
     @PutMapping("/personnes/{personneId}")

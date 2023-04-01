@@ -43,7 +43,7 @@ public class PersonneServiceImpl implements PersonneService{
 
     @Override
     public Personne updatePersonne(Personne personne) {
-        log.info("Saving  new Customer");
+        log.info("Updating Customer");
         Personne savedPersonne =personneRepository.save(personne);
         return savedPersonne;
     }
