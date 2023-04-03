@@ -3,9 +3,15 @@ package com.example.aveiro_project.Services;
 import com.example.aveiro_project.Entities.Depot;
 import com.example.aveiro_project.Exceptions.DepotNotFoundException;
 import com.example.aveiro_project.Repository.DepotRepository;
+import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+@Service
+@Transactional
+@AllArgsConstructor
 public class DepotServiceImpl implements DepotService{
     private DepotRepository depotRepository;
     @Override

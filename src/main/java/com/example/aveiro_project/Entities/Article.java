@@ -27,7 +27,7 @@ public class Article {
     private Nature nature;
     @Enumerated(EnumType.STRING)
     private Qualite qualite;
-//    @OneToMany(mappedBy = "article")
-//    private List<Operation>  operations;
+    @OneToMany(mappedBy = "article")
+    private List<Operation>  operations;
 
 }

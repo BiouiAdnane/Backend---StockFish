@@ -1,8 +1,5 @@
 package com.example.aveiro_project.Services;
-
-import com.example.aveiro_project.Entities.Article;
 import com.example.aveiro_project.Entities.Depot;
-import com.example.aveiro_project.Exceptions.ArticleNotFoundException;
 import com.example.aveiro_project.Exceptions.DepotNotFoundException;
 
 import java.util.List;

@@ -1,4 +1,4 @@
-package com.example.aveiro_project.web;
+package com.example.aveiro_project.Web;
 import com.example.aveiro_project.Entities.Depot;
 import com.example.aveiro_project.Exceptions.DepotNotFoundException;
 import com.example.aveiro_project.Services.DepotService;
