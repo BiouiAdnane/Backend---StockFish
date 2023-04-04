@@ -75,6 +75,10 @@ public class AveiroProjectApplication {
 			Lukus.setDesigniation("HO LUKUS SAR M MarCl");
 			articleRepository.save(Lukus);
 
+			Article couvercle1=new Article();
+			couvercle1.setDesigniation("CC");
+			articleRepository.save(couvercle1);
+
 			Article Lukuss =new Article();
 			Lukuss.setIngredient(Ingredient.Sauce_Tomate);
 			Lukuss.setNature(Nature.Thon);

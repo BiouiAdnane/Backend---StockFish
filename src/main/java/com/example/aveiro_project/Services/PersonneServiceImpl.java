@@ -50,6 +50,7 @@ public class PersonneServiceImpl implements PersonneService{
 
     @Override
     public void deletePersonne(int personneId){
+
         personneRepository.deleteById(personneId);
     }
 
