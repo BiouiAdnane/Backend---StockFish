@@ -21,6 +21,8 @@ public class Depot {
     private int nbrMaxAllee;
     private int nbrMaxRangee;
     private int nbrMaxNiveau;
+    @OneToMany(mappedBy = "depot")
+    private List<Operation> operations;
 //    @OneToMany(mappedBy = "depot")
-//    private List<Operation> operations;
+//    private List<Article>articles;
 }

@@ -16,4 +16,7 @@ public interface OperationService {
     Operation updateOperation(Operation operation);
 
     void deleteOperation(int operationId);
+
+    List<Operation> listerOpByUserId(int userId);
+
 }

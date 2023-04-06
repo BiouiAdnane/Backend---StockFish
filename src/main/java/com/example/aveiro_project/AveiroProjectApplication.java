@@ -5,6 +5,7 @@ import com.example.aveiro_project.Entities.Depot;
 import com.example.aveiro_project.Entities.Operation;
 import com.example.aveiro_project.Entities.Personne;
 import com.example.aveiro_project.Enums.*;
+import com.example.aveiro_project.Exceptions.DepotMax;
 import com.example.aveiro_project.Repository.ArticleRepository;
 import com.example.aveiro_project.Repository.DepotRepository;
 import com.example.aveiro_project.Repository.OperationRepository;
@@ -50,7 +51,7 @@ public class AveiroProjectApplication {
 
 			});
 
-//			LES ARTICLES
+//LES ARTICLES
 
 			Article Joly =new Article();
 			Joly.setIngredient(Ingredient.Huile_Olive);
@@ -84,6 +85,9 @@ public class AveiroProjectApplication {
 			Lukuss.setDesigniation("ST LUKUS THON M MarCl");
 			articleRepository.save(Lukuss);
 
+			Article couvercle1 = new Article();
+			couvercle1.setDesigniation("CC1 1/4");
+//DEPOTS
 			Depot depotEmballage =new Depot();
 			depotEmballage.setNom_Depot("Depot Emballage");
 			depotEmballage.setQauntiteMax(100000);
@@ -103,42 +107,60 @@ public class AveiroProjectApplication {
 			depotPrFini.setQuantiteActuelle(0);
 			depotRepository.save(depotPrFini);
 
-//			LES OPERATIONS
-			Operation operation1=new Operation();
-			operation1.setQuantite(5000);
-			operation1.setAllee(2);
-			operation1.setRangee(5);
-			operation1.setNiveau(4);
-			operation1.setTypeOpr("Entrée");
-			operation1.setArticle(Joly);
-			operationRepository.save(operation1);
+//LES OPERATIONS
+			Operation operation=new Operation();
+			operation.setQuantite(5666);
+			operation.setDepot(depotEmballage);
+			operation.setArticle(Jolly);
+			operation.setTypeOpr(TypeOp.E);
+			operation.setRangee(1);
+			operation.setNiveau(2);
+			operation.setAllee(1);
+			Jolly.setQuantite_Article(Jolly.getQuantite_Article()+operation.getQuantite());
+			operation.setPersonne(personneRepository.getReferenceById(1));
+			operationRepository.save(operation);
+			depotRepository.save(depotEmballage);
 
 			Operation operation2=new Operation();
-			operation2.setQuantite(2500);
-			operation2.setAllee(2);
-			operation2.setRangee(16);
-			operation2.setNiveau(4);
-			operation2.setTypeOpr("Sortie");
-			operation2.setArticle(Lukus);
+			operation2.setQuantite(3000);
+			operation2.setDepot(depotEmballage);
+			operation2.setArticle(Jolly);
+			operation2.setTypeOpr(TypeOp.S);
+			operation2.setRangee(1);
+			operation2.setNiveau(2);
+			operation2.setAllee(1);
+			depotEmballage.setQuantiteActuelle(depotEmballage.getQuantiteActuelle()-operation2.getQuantite());
+			operation2.setPersonne(personneRepository.getReferenceById(1));
 			operationRepository.save(operation2);
-
+			depotRepository.save(depotEmballage);
+			
 			Operation operation3=new Operation();
-			operation3.setQuantite(2300);
-			operation3.setAllee(7);
-			operation3.setRangee(12);
-			operation3.setNiveau(2);
-			operation3.setTypeOpr("Entrée");
-			operation3.setArticle(Jolly);
+			operation3.setQuantite(2000);
+			operation3.setDepot(depotPrFini);
+			operation3.setArticle(Lukuss);
+			operation3.setTypeOpr(TypeOp.E);
+			operation3.setRangee(1);
+			operation3.setNiveau(3);
+			operation3.setAllee(1);
+			depotPrFini.setQuantiteActuelle(depotPrFini.getQuantiteActuelle()+operation3.getQuantite());
+			operation3.setPersonne(personneRepository.getReferenceById(1));
 			operationRepository.save(operation3);
-
+			depotRepository.save(depotPrFini);
+			
 			Operation operation4=new Operation();
-			operation4.setQuantite(300);
-			operation4.setAllee(1);
-			operation4.setRangee(1);
-			operation4.setNiveau(5);
-			operation4.setTypeOpr("Entrée");
+			operation4.setQuantite(2000);
+			operation4.setDepot(depotPrFini);
 			operation4.setArticle(Lukuss);
+			operation4.setTypeOpr(TypeOp.E);
+			operation4.setRangee(17);
+			operation4.setNiveau(4);
+			operation4.setAllee(11);
+			depotPrFini.setQuantiteActuelle(depotPrFini.getQuantiteActuelle()+operation4.getQuantite());
+			operation4.setPersonne(personneRepository.getReferenceById(2));
 			operationRepository.save(operation4);
+			depotRepository.save(depotPrFini);
+
+
 		};
 
 	} }

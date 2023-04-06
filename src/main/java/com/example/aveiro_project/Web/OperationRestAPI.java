@@ -38,4 +38,9 @@ public class OperationRestAPI {
     public void deletePersonne(@PathVariable int operationId){
         operationService.deleteOperation(operationId);
     }
+
+    @GetMapping("operationsuser/{userId}")
+    public List<Operation> operationListByUserId(@PathVariable int userId){
+        return operationService.listerOpByUserId(userId);
+    }
 }
