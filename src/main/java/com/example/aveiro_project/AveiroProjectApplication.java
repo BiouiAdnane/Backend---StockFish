@@ -1,15 +1,9 @@
 package com.example.aveiro_project;
 
-import com.example.aveiro_project.Entities.Article;
-import com.example.aveiro_project.Entities.Depot;
-import com.example.aveiro_project.Entities.Operation;
-import com.example.aveiro_project.Entities.Personne;
+import com.example.aveiro_project.Entities.*;
 import com.example.aveiro_project.Enums.*;
 import com.example.aveiro_project.Exceptions.DepotMax;
-import com.example.aveiro_project.Repository.ArticleRepository;
-import com.example.aveiro_project.Repository.DepotRepository;
-import com.example.aveiro_project.Repository.OperationRepository;
-import com.example.aveiro_project.Repository.PersonneRepository;
+import com.example.aveiro_project.Repository.*;
 import org.hibernate.query.sqm.ConstructorEntityArgumentMode;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -31,7 +25,8 @@ public class AveiroProjectApplication {
 	CommandLineRunner start(PersonneRepository personneRepository,
 							DepotRepository depotRepository,
 							OperationRepository operationRepository,
-							ArticleRepository articleRepository){
+							ArticleRepository articleRepository,
+							FamilleRepo familleRepo){
 		return args -> {
 			Stream.of("Adnan", "Ahmed", "Mourad","Othman").forEach(name->{
 				Personne personne= new Personne();
@@ -51,37 +46,69 @@ public class AveiroProjectApplication {
 
 			});
 
+			// FAMILLES
+			Ingredient ingredient1 =new Ingredient();
+			ingredient1.setNom("huile_d'olive");
+			Ingredient ingredient2 =new Ingredient();
+			ingredient2.setNom("sauce_tomate");
+			Marque marque = new Marque();
+			marque.setNom("Propre");
+			Marque marque1 =new Marque();
+			marque1.setNom("Client");
+			Nature nature=new Nature();
+			nature.setNom("Sardines");
+			Nature nature1=new Nature();
+			nature1.setNom("Maquereaus");
+			Qualite qualite = new Qualite();
+			qualite.setNom("Standard");
+			Qualite qualite1=new Qualite();
+			qualite1.setNom("Marchand");
+			Qualite qualite2=new Qualite();
+			qualite2.setNom("Local");
+			familleRepo.save(ingredient1);
+			familleRepo.save(ingredient2);
+			familleRepo.save(marque);
+			familleRepo.save(marque1);
+			familleRepo.save(nature);
+			familleRepo.save(nature1);
+			familleRepo.save(qualite1);
+			familleRepo.save(qualite);
+			familleRepo.save(qualite2);
+
+
 //LES ARTICLES
 
 			Article Joly =new Article();
-			Joly.setIngredient(Ingredient.Huile_Olive);
-			Joly.setNature(Nature.Maquereaus);
-			Joly.setQualite(Qualite.Bon_Marchand);
-			Joly.setMarque(Marque.Propre);
+			Joly.setIngredient(ingredient1);
+			Joly.setNature(nature1);
+			Joly.setQualite(qualite1);
+			Joly.setMarque(marque1);
 			Joly.setDesigniation("HO JOLLY MAQ BM MarPr");
+			Joly.setQuantite_Article(900);
 			articleRepository.save(Joly);
 
 			Article Jolly =new Article();
-			Jolly.setIngredient(Ingredient.Huile_Vigitale);
-			Jolly.setNature(Nature.Maquereaus);
-			Jolly.setQualite(Qualite.Bon_Marchand);
-			Jolly.setMarque(Marque.Propre);
+			Jolly.setIngredient(ingredient2);
+			Jolly.setNature(nature);
+			Jolly.setQualite(qualite);
+			Jolly.setMarque(marque);
 			Jolly.setDesigniation("HV JOLLY MAQ BM MarPr");
+			Jolly.setQuantite_Article(200);
 			articleRepository.save(Jolly);
 
 			Article Lukus =new Article();
-			Lukus.setIngredient(Ingredient.Huile_Olive);
-			Lukus.setNature(Nature.Sardine);
-			Lukus.setQualite(Qualite.Marchand);
-			Lukus.setMarque(Marque.Client);
+			Lukus.setIngredient(ingredient1);
+			Lukus.setNature(nature);
+			Lukus.setQualite(qualite2);
+			Lukus.setMarque(marque);
 			Lukus.setDesigniation("HO LUKUS SAR M MarCl");
 			articleRepository.save(Lukus);
 
 			Article Lukuss =new Article();
-			Lukuss.setIngredient(Ingredient.Sauce_Tomate);
-			Lukuss.setNature(Nature.Thon);
-			Lukuss.setQualite(Qualite.Marchand);
-			Lukuss.setMarque(Marque.Client);
+			Lukuss.setIngredient(ingredient2);
+			Lukuss.setNature(nature1);
+			Lukuss.setQualite(qualite2);
+			Lukuss.setMarque(marque1);
 			Lukuss.setDesigniation("ST LUKUS THON M MarCl");
 			articleRepository.save(Lukuss);
 

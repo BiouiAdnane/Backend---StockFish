@@ -27,8 +27,8 @@ public class ArticleServiceImpl implements ArticleService{
     }
 
     @Override
-    public Article findArticle(int id) {
-        Article article=articleRepository.findById(id).orElse(null);
+    public Article findArticle(int id) throws ArticleNotFoundException {
+        Article article=articleRepository.findById(id).orElseThrow( ()->new ArticleNotFoundException("Article not found") ) ;
         return article;
     }
 
@@ -37,19 +37,8 @@ public class ArticleServiceImpl implements ArticleService{
         articleRepository.deleteById(id);
     }
 
-
-   /* public Article updateArticle(int id, Article article) throws ArticleNotFoundException {
-        Article existingArticle = articleRepository.findById(id)
-                .orElseThrow(() -> new ArticleNotFoundException("Article not found with id: " + id));
-        existingArticle.setIngredient(article.getIngredient());
-        existingArticle.setNature(article.getNature());
-        existingArticle.setMarque(article.getMarque());
-        existingArticle.setQualite(article.getQualite());
-        existingArticle.setDesigniation(article.getDesigniation());
-        return articleRepository.save(existingArticle);
-    }*/
    @Override
-    public Article updateArticle(Article article) throws ArticleNotFoundException {
+    public Article updateArticle(Article article) {
         return articleRepository.save(article);
     }
 }

@@ -1,5 +1,6 @@
 package com.example.aveiro_project.Repository;
 
+import com.example.aveiro_project.Entities.Article;
 import com.example.aveiro_project.Entities.Operation;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -10,4 +11,6 @@ public interface OperationRepository extends JpaRepository<Operation,Integer > {
     List<Operation> findOperationsByPersonne_Matriculation(int userId);
 
     List<Operation> findOperationByDateOpertaionEquals(Date date);
+    List<Operation> findOperationsByDateOpertaionIsBetween(Date dateDebut,Date dateFin);
+
 }

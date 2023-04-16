@@ -28,7 +28,7 @@ public class Operation {
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Personne personne;
     private int quantite;
-    private String nLot= "AT"+ getNumberOfDaysSinceStartOfYear(LocalDate.now())+"C";
+    private String nLot= "ET"+ getNumberOfDaysSinceStartOfYear(LocalDate.now())+"C";
     private int allee;
     private int rangee;
     private int niveau;

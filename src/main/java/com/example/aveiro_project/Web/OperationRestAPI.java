@@ -1,9 +1,12 @@
 package com.example.aveiro_project.Web;
 
 import com.example.aveiro_project.Entities.Operation;
+import com.example.aveiro_project.Exceptions.QuantiteInsufficient;
 import com.example.aveiro_project.Services.OperationService;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 @RestController
 @CrossOrigin("*")
@@ -14,7 +17,7 @@ public class OperationRestAPI {
     }
 
     @PostMapping("/operations")
-    public Operation saveOperation(@RequestBody Operation operation){
+    public Operation saveOperation(@RequestBody Operation operation) throws QuantiteInsufficient {
         return operationService.saveOperation(operation);
     }
 
@@ -29,7 +32,7 @@ public class OperationRestAPI {
     }
 
     @PutMapping("/operations/{operationId}")
-    public  Operation updateOperation(@PathVariable int operationId, @RequestBody Operation operation){
+    public  Operation updateOperation(@PathVariable int operationId, @RequestBody Operation operation) throws QuantiteInsufficient {
         operation.setIdOperation(operationId);
         return operationService.updateOperation(operation);
     }
@@ -42,5 +45,10 @@ public class OperationRestAPI {
     @GetMapping("operationsuser/{userId}")
     public List<Operation> operationListByUserId(@PathVariable int userId){
         return operationService.listerOpByUserId(userId);
+    }
+    @GetMapping("/operationsday/{date}")
+    public List<Operation> listerOpDate(@PathVariable("date")
+                                            @DateTimeFormat(pattern = "dd.MM.yyyy") Date date){
+        return operationService.listerOpDate(date);
     }
 }

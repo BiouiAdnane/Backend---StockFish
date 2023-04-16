@@ -1,5 +1,6 @@
 package com.example.aveiro_project.Entities;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -22,6 +23,7 @@ public class Depot {
     private int nbrMaxRangee;
     private int nbrMaxNiveau;
     @OneToMany(mappedBy = "depot")
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private List<Operation> operations;
 //    @OneToMany(mappedBy = "depot")
 //    private List<Article>articles;
