@@ -9,6 +9,7 @@ import java.util.List;
 
 @RestController
 @AllArgsConstructor
+@CrossOrigin("*")
 public class FamilleRestAPI {
     private FamilleService familleService;
     private MarqueService marqueService;

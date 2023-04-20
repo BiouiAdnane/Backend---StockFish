@@ -21,7 +21,7 @@ public class PersonneRestAPI {
 
     @GetMapping("/personnes")
     public List<Personne> getPersonne(){
-        return (List<Personne>) personneService.getPersonne();
+        return  personneService.getPersonne();
     }
 
     @GetMapping("/personnes/{personneId}")

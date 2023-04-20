@@ -9,6 +9,7 @@ import java.util.List;
 
 @RestController
 @AllArgsConstructor
+@CrossOrigin("*")
 public class DepotRestAPI {
     private DepotService depotService;
     @GetMapping("/depots")

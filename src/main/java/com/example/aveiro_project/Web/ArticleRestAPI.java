@@ -10,6 +10,7 @@ import java.util.List;
 
 @RestController
 @AllArgsConstructor
+@CrossOrigin("*")
 public class ArticleRestAPI {
     private ArticleService articleService;
     @GetMapping("/articles")
