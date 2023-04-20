@@ -23,10 +23,12 @@ public class Article {
     private Nature nature;
     @ManyToOne
     private Qualite qualite;
-@OneToMany(mappedBy = "article",fetch = FetchType.LAZY)
-@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-private List<Operation>  operations;
-//    @ManyToOne
-//    private Depot depot;
+    @OneToMany(mappedBy = "article",fetch = FetchType.LAZY)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    private List<Operation>  operations;
+/*
+    @ManyToOne
+    private Depot depot;
+*/
 
 }

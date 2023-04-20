@@ -16,6 +16,7 @@ import java.util.List;
 @Slf4j
 
 public class PersonneServiceImpl implements PersonneService{
+
     private PersonneRepository personneRepository;
 
     @Override
@@ -51,6 +52,12 @@ public class PersonneServiceImpl implements PersonneService{
     @Override
     public void deletePersonne(int personneId){
         personneRepository.deleteById(personneId);
+    }
+
+    @Override
+    public List<Personne> searchPersonne(String keyword) {
+        List<Personne> personnes = personneRepository.searchPersonne(keyword) ;
+        return personnes;
     }
 
 

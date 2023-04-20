@@ -15,4 +15,5 @@ public interface PersonneService {
     Personne updatePersonne(Personne personne);
 
     void deletePersonne(int personneId);
+    List<Personne> searchPersonne(String keyword);
 }
