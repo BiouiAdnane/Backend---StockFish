@@ -16,11 +16,13 @@ public class PersonneRestAPI {
 
     @PostMapping("/personnes")
     public Personne savePersonne(@RequestBody Personne personne){
+
         return personneService.savePersonne(personne);
     }
 
     @GetMapping("/personnes")
     public List<Personne> getPersonne(){
+
         return  personneService.getPersonne();
     }
 
@@ -40,4 +42,9 @@ public class PersonneRestAPI {
         personneService.deletePersonne(personneId);
     }
 
+
+    @GetMapping("/personnes/search")
+    public List<Personne> searchUtilisateur(@RequestParam(name = "keyword" , defaultValue = "") String keyword){
+        return personneService.searchPersonne("%"+keyword+"%");
+    }
 }
