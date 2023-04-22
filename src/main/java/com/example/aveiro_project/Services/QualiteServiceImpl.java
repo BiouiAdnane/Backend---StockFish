@@ -1,5 +1,7 @@
 package com.example.aveiro_project.Services;
 
+import com.example.aveiro_project.Entities.Marque;
+import com.example.aveiro_project.Entities.Nature;
 import com.example.aveiro_project.Entities.Qualite;
 import com.example.aveiro_project.Repository.QualiteRepo;
 import lombok.AllArgsConstructor;
@@ -34,5 +36,12 @@ public class QualiteServiceImpl implements QualiteService {
     public void deleteQualite(int id) {
         qualiteRepo.deleteById(id);
     }
+
+    @Override
+    public List<Qualite> searchQualite(String keyword) {
+        List<Qualite> qualites = qualiteRepo.searchQualite(keyword) ;
+        return qualites;
+    }
+
 
 }

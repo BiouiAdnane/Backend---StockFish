@@ -39,19 +39,18 @@ public class FamilleRestAPI {
     //~~~~~~~~~~~~~INGREDIENTS`````````````````\\
 
     @GetMapping("/familles/ingredients")
-    public List<Ingredient> listIngredients(){
-        return ingredientService.listerIngredients();}
+    public List<Ingredient> listIngredients(){return ingredientService.listerIngredients();}
     @PostMapping("/familles/ingredients")
-    public Ingredient saveIngredient(@RequestBody Ingredient ingredient){
-        return ingredientService.saveIngredient(ingredient);
-    }
+    public Ingredient saveIngredient(@RequestBody Ingredient ingredient){return ingredientService.saveIngredient(ingredient);}
     @PutMapping("/familles/ingredients")
-    public Ingredient updateIngredient(@RequestBody Ingredient ingredient){
-        return ingredientService.updateIngredient(ingredient);
-    }
+    public Ingredient updateIngredient(@RequestBody Ingredient ingredient){return ingredientService.updateIngredient(ingredient);}
     @DeleteMapping("/familles/ingredients/{id}")
     public void deleteIngredient(@PathVariable int id){
          ingredientService.deleteIngredient(id);
+    }
+    @GetMapping("/familles/ingredients/search")
+    public List<Ingredient> searchIngredient(@RequestParam(name = "keyword" , defaultValue = "") String keyword){
+        return ingredientService.searchIngredient("%"+keyword+"%");
     }
 
 
@@ -79,10 +78,7 @@ public class FamilleRestAPI {
     public List<Marque> searchMarque(@RequestParam(name = "keyword" , defaultValue = "") String keyword){
         return marqueService.searchMarque("%"+keyword+"%");
     }
-    @GetMapping("/familles/marques/{id_Famille}")
-    public Marque getMarque(@PathVariable int id_Famille) {
-        return marqueService.getMarqueId(id_Famille);
-    }
+
 
 
 
@@ -106,6 +102,10 @@ public class FamilleRestAPI {
     public void deleteNature(@PathVariable int id){
         natureService.deleteNature(id);
     }
+    @GetMapping("/familles/natures/search")
+    public List<Nature> searchNature(@RequestParam(name = "keyword" , defaultValue = "") String keyword){
+        return natureService.searchNature("%"+keyword+"%");
+    }
 
 
 
@@ -125,6 +125,10 @@ public class FamilleRestAPI {
     @DeleteMapping("/familles/qualites/{id}")
     public void deleteQualite(@PathVariable int id){
         qualiteService.deleteQualite(id);
+    }
+    @GetMapping("/familles/qualites/search")
+    public List<Qualite> searchQualite(@RequestParam(name = "keyword" , defaultValue = "") String keyword){
+        return qualiteService.searchQualite("%"+keyword+"%");
     }
 
 }

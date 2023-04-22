@@ -11,4 +11,6 @@ public interface IngredientService {
     public Ingredient updateIngredient(Ingredient ingredient);
 //    public Ingredient findByName(String kw);
     public void deleteIngredient(int id);
+
+    List<Ingredient> searchIngredient(String keyword);
 }

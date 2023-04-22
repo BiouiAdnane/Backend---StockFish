@@ -1,5 +1,6 @@
 package com.example.aveiro_project.Services;
 
+import com.example.aveiro_project.Entities.Marque;
 import com.example.aveiro_project.Entities.Nature;
 import com.example.aveiro_project.Repository.NatureRepo;
 import lombok.AllArgsConstructor;
@@ -33,5 +34,11 @@ public class NatureServiceImpl implements NatureService {
     @Override
     public void deleteNature(int id) {
         natureRepo.deleteById(id);
+    }
+
+    @Override
+    public List<Nature> searchNature(String keyword) {
+        List<Nature> natures = natureRepo.searchNature(keyword) ;
+        return natures;
     }
 }
