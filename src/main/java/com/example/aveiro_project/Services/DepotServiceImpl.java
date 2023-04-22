@@ -38,4 +38,11 @@ public class DepotServiceImpl implements DepotService{
     public Depot updateDepot(Depot depot) throws DepotNotFoundException {
         return depotRepository.save(depot);
     }
+
+    @Override
+    public List<Depot> searchDepot(String keyword) {
+        List<Depot> depots =depotRepository.searchDepot(keyword);
+        return depots;
+    }
+
 }

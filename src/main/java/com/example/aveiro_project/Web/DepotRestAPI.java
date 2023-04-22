@@ -33,4 +33,8 @@ public class DepotRestAPI {
     public void deleteDepot(@PathVariable int id){
         depotService.deleteDepot(id);
     }
+    @GetMapping("/depots/search")
+    public List<Depot> searchDepot(@RequestParam(name = "keyword" , defaultValue = "") String keyword){
+        return depotService.searchDepot("%"+keyword+"%");
+    }
 }

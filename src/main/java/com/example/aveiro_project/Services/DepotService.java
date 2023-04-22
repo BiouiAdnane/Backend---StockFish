@@ -10,4 +10,5 @@ public interface DepotService {
     public Depot findDepot(int id);
     public void deleteDepot(int id);
     public Depot updateDepot(Depot depot) throws DepotNotFoundException;
+    List<Depot> searchDepot(String keyword);
 }

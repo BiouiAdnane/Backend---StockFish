@@ -1,6 +1,7 @@
 package com.example.aveiro_project.Web;
 
 import com.example.aveiro_project.Entities.*;
+import com.example.aveiro_project.Exceptions.DepotNotFoundException;
 import com.example.aveiro_project.Services.*;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -73,6 +74,14 @@ public class FamilleRestAPI {
     @DeleteMapping("/familles/marques/{id}")
     public void deleteMarque(@PathVariable int id){
         marqueService.deleteMarque(id);
+    }
+    @GetMapping("/familles/marques/search")
+    public List<Marque> searchMarque(@RequestParam(name = "keyword" , defaultValue = "") String keyword){
+        return marqueService.searchMarque("%"+keyword+"%");
+    }
+    @GetMapping("/familles/marques/{id_Famille}")
+    public Marque getMarque(@PathVariable int id_Famille) {
+        return marqueService.getMarqueId(id_Famille);
     }
 
 
