@@ -1,6 +1,7 @@
 package com.example.aveiro_project.Services;
 
 import com.example.aveiro_project.Entities.Personne;
+import com.example.aveiro_project.Exceptions.ArticleNotFoundException;
 import com.example.aveiro_project.Exceptions.PersonneNotFoundException;
 import com.example.aveiro_project.Repository.PersonneRepository;
 import lombok.AllArgsConstructor;
@@ -35,9 +36,7 @@ public class PersonneServiceImpl implements PersonneService{
 
     @Override
     public Personne getPersonneId(int personneId) throws PersonneNotFoundException {
-        Personne personne = personneRepository.findById(personneId).orElse(null);
-        if (personne==null)
-            throw new PersonneNotFoundException("User Not Found");
+        Personne personne = personneRepository.findById(personneId).orElseThrow( ()->new PersonneNotFoundException("user not found") );
         return personne;
     }
 

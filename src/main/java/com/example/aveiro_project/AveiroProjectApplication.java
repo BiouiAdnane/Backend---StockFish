@@ -84,7 +84,7 @@ public class AveiroProjectApplication {
 			Joly.setQualite(qualite1);
 			Joly.setMarque(marque1);
 			Joly.setDesigniation("HO JOLLY MAQ BM MarPr");
-			Joly.setQuantite_Article(900);
+			Joly.setQuantite_Article(0);
 			articleRepository.save(Joly);
 
 			Article Jolly =new Article();
@@ -93,7 +93,7 @@ public class AveiroProjectApplication {
 			Jolly.setQualite(qualite);
 			Jolly.setMarque(marque);
 			Jolly.setDesigniation("HV JOLLY MAQ BM MarPr");
-			Jolly.setQuantite_Article(200);
+			Jolly.setQuantite_Article(0);
 			articleRepository.save(Jolly);
 
 			Article Lukus =new Article();
@@ -102,6 +102,7 @@ public class AveiroProjectApplication {
 			Lukus.setQualite(qualite2);
 			Lukus.setMarque(marque);
 			Lukus.setDesigniation("HO LUKUS SAR M MarCl");
+			Lukus.setQuantite_Article(0);
 			articleRepository.save(Lukus);
 
 			Article Lukuss =new Article();
@@ -110,10 +111,12 @@ public class AveiroProjectApplication {
 			Lukuss.setQualite(qualite2);
 			Lukuss.setMarque(marque1);
 			Lukuss.setDesigniation("ST LUKUS THON M MarCl");
+			Lukuss.setQuantite_Article(0);
 			articleRepository.save(Lukuss);
 
 			Article couvercle1 = new Article();
 			couvercle1.setDesigniation("CC1 1/4");
+			articleRepository.save(couvercle1);
 //DEPOTS
 			Depot depotEmballage =new Depot();
 			depotEmballage.setNom_Depot("Depot Emballage");
@@ -145,6 +148,8 @@ public class AveiroProjectApplication {
 			operation.setAllee(1);
 			Jolly.setQuantite_Article(Jolly.getQuantite_Article()+operation.getQuantite());
 			operation.setPersonne(personneRepository.getReferenceById(1));
+			depotEmballage.setQuantiteActuelle(depotEmballage.getQuantiteActuelle()+operation.getQuantite());
+			articleRepository.save(Jolly);
 			operationRepository.save(operation);
 			depotRepository.save(depotEmballage);
 
@@ -158,6 +163,8 @@ public class AveiroProjectApplication {
 			operation2.setAllee(1);
 			depotEmballage.setQuantiteActuelle(depotEmballage.getQuantiteActuelle()-operation2.getQuantite());
 			operation2.setPersonne(personneRepository.getReferenceById(1));
+			Jolly.setQuantite_Article(Jolly.getQuantite_Article()-operation2.getQuantite());
+			articleRepository.save(Jolly);
 			operationRepository.save(operation2);
 			depotRepository.save(depotEmballage);
 			
@@ -171,6 +178,8 @@ public class AveiroProjectApplication {
 			operation3.setAllee(1);
 			depotPrFini.setQuantiteActuelle(depotPrFini.getQuantiteActuelle()+operation3.getQuantite());
 			operation3.setPersonne(personneRepository.getReferenceById(1));
+			Lukuss.setQuantite_Article(Lukus.getQuantite_Article()+operation3.getQuantite());
+			articleRepository.save(Lukuss);
 			operationRepository.save(operation3);
 			depotRepository.save(depotPrFini);
 			
@@ -183,7 +192,9 @@ public class AveiroProjectApplication {
 			operation4.setNiveau(4);
 			operation4.setAllee(11);
 			depotPrFini.setQuantiteActuelle(depotPrFini.getQuantiteActuelle()+operation4.getQuantite());
+			Lukuss.setQuantite_Article(Lukuss.getQuantite_Article()+operation4.getQuantite());
 			operation4.setPersonne(personneRepository.getReferenceById(2));
+			articleRepository.save(Lukuss);
 			operationRepository.save(operation4);
 			depotRepository.save(depotPrFini);
 
