@@ -1,6 +1,7 @@
 package com.example.aveiro_project.Web;
 
 import com.example.aveiro_project.Entities.Operation;
+import com.example.aveiro_project.Exceptions.DepotMax;
 import com.example.aveiro_project.Exceptions.QuantiteInsufficient;
 import com.example.aveiro_project.Services.OperationService;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -17,7 +18,7 @@ public class OperationRestAPI {
     }
 
     @PostMapping("/operations")
-    public Operation saveOperation(@RequestBody Operation operation) throws QuantiteInsufficient {
+    public Operation saveOperation(@RequestBody Operation operation) throws QuantiteInsufficient, DepotMax {
         return operationService.saveOperation(operation);
     }
 
@@ -32,7 +33,7 @@ public class OperationRestAPI {
     }
 
     @PutMapping("/operations/{operationId}")
-    public  Operation updateOperation(@PathVariable int operationId, @RequestBody Operation operation) throws QuantiteInsufficient {
+    public  Operation updateOperation(@PathVariable int operationId, @RequestBody Operation operation) throws QuantiteInsufficient, DepotMax {
         operation.setIdOperation(operationId);
         return operationService.updateOperation(operation);
     }
