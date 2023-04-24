@@ -1,6 +1,7 @@
 package com.example.aveiro_project.Services;
 
 import com.example.aveiro_project.Entities.Article;
+import com.example.aveiro_project.Entities.Personne;
 import com.example.aveiro_project.Exceptions.ArticleNotFoundException;
 import com.example.aveiro_project.Repository.ArticleRepository;
 import jakarta.transaction.Transactional;
@@ -40,5 +41,11 @@ public class ArticleServiceImpl implements ArticleService{
    @Override
     public Article updateArticle(Article article) {
         return articleRepository.save(article);
+    }
+
+    @Override
+    public List<Article> searchArticle(String keyword) {
+        List<Article> articles = articleRepository.searchArticle(keyword) ;
+        return articles;
     }
 }

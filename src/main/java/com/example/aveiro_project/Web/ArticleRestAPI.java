@@ -1,6 +1,7 @@
 package com.example.aveiro_project.Web;
 
 import com.example.aveiro_project.Entities.Article;
+import com.example.aveiro_project.Entities.Personne;
 import com.example.aveiro_project.Exceptions.ArticleNotFoundException;
 import com.example.aveiro_project.Services.ArticleService;
 import lombok.AllArgsConstructor;
@@ -33,5 +34,11 @@ public class ArticleRestAPI {
     @DeleteMapping("/articles/{id}")
     public void deleteArticle(@PathVariable int id){
         articleService.deleteArticle(id);
+    }
+
+
+    @GetMapping("/articles/search")
+    public List<Article> searchArticle(@RequestParam(name = "keyword" , defaultValue = "") String keyword){
+        return articleService.searchArticle("%"+keyword+"%");
     }
 }

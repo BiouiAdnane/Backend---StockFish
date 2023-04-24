@@ -19,4 +19,10 @@ public class Nature extends Famille {
     @OneToMany(mappedBy = "nature")
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     List<Article> articles;
+
+    public static Nature fromString(String value) {
+        Nature nature = new Nature();
+        nature.setId_Famille(Integer.parseInt(value));
+        return nature;
+    }
 }

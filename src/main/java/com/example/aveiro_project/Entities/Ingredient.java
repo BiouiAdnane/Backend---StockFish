@@ -19,4 +19,10 @@ public class Ingredient extends Famille {
     @OneToMany(mappedBy = "ingredient")
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     List<Article> articles;
+
+    public static Ingredient fromString(String value) {
+        Ingredient ingredient = new Ingredient();
+        ingredient.setId_Famille(Integer.parseInt(value));
+        return ingredient;
+    }
 }

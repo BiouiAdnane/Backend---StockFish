@@ -19,4 +19,10 @@ public class Qualite extends Famille {
     @OneToMany(mappedBy = "qualite")
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     List<Article> articles;
+
+    public static Qualite fromString(String value) {
+        Qualite qualite = new Qualite();
+        qualite.setId_Famille(Integer.parseInt(value));
+        return qualite;
+    }
 }

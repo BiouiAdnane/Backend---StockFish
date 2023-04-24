@@ -18,4 +18,10 @@ public class Marque extends Famille {
     @OneToMany(mappedBy = "marque")
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     List<Article> articles;
+
+    public static Marque fromString(String value) {
+        Marque marque = new Marque();
+        marque.setId_Famille(Integer.parseInt(value));
+        return marque;
+    }
 }
