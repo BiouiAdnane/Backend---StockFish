@@ -26,4 +26,6 @@ public interface OperationService {
     List<Operation> listerOpEmb(TypeOp typeOp);
     List<Operation> listerOpPrf(TypeOp typeOp);
     List<Object[]> articleDepotEmb();
+
+    List<Object[]> articleDepotPrf();
 }
