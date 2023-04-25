@@ -113,10 +113,7 @@ public class AveiroProjectApplication {
 			Lukuss.setDesigniation("ST LUKUS THON M MarCl");
 			Lukuss.setQuantite_Article(0);
 			articleRepository.save(Lukuss);
-
-			Article couvercle1 = new Article();
-			couvercle1.setDesigniation("CC1 1/4");
-			articleRepository.save(couvercle1);
+			
 //DEPOTS
 			Depot depotEmballage =new Depot();
 			depotEmballage.setNom_Depot("Depot Emballage");

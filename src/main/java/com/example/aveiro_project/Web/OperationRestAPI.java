@@ -69,8 +69,12 @@ public class OperationRestAPI {
     public List<Operation> listOpPrfS(){
         return operationService.listerOpPrf(TypeOp.S);
     }
-    @GetMapping("operations/depots/articles")
+    @GetMapping("operations/depots/articles/emb")
     public List<Object[]> articleDepotEmb(){
         return operationService.articleDepotEmb();
+    }
+    @GetMapping("operations/depots/articles/prf")
+    public List<Object[]> articleDepotPrF(){
+        return operationService.articleDepotPrf();
     }
 }

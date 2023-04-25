@@ -131,6 +131,11 @@ public class OperationServiceImpl implements OperationService{
         return operationRepository.finddipoemb() ;
     }
 
+    @Override
+    public List<Object[]> articleDepotPrf() {
+        return operationRepository.finddipoprf();
+    }
+
 
     public static long getNumberOfDaysSinceStartOfYear(LocalDate date) {
 
