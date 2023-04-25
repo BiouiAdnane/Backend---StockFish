@@ -109,6 +109,29 @@ public class OperationServiceImpl implements OperationService{
         return operationRepository.findOperationsByDateOpertaionIsBetween(dateDebut,dateFin) ;
     }
 
+    @Override
+    public List<Operation> listerOpEmb(TypeOp typeOp) {
+//        List<Operation> operations= operationRepository.findOperationsByTypeOprIs(typeOp);
+        Depot depot = depotRepository.getReferenceById(1);
+        List<Operation>operations=operationRepository.findByTypeOprAndDepot(typeOp,depot);
+        return operations;
+    }
+
+    @Override
+    public List<Operation> listerOpPrf(TypeOp typeOp) {
+//        List<Operation> operations= operationRepository.findOperationsByTypeOprIs(typeOp);
+        Depot depot = depotRepository.getReferenceById(2);
+        List<Operation> operations= operationRepository.findByTypeOprAndDepot(typeOp,depot);
+        return operations;
+    }
+
+    @Override
+    public List<Object[]> articleDepotEmb() {
+        log.info("all articles");
+        return operationRepository.finddipoemb() ;
+    }
+
+
     public static long getNumberOfDaysSinceStartOfYear(LocalDate date) {
 
         LocalDate startOfYear = LocalDate.of(date.getYear(), 1, 1);

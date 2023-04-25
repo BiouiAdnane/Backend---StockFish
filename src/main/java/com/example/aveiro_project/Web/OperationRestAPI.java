@@ -1,6 +1,7 @@
 package com.example.aveiro_project.Web;
 
 import com.example.aveiro_project.Entities.Operation;
+import com.example.aveiro_project.Enums.TypeOp;
 import com.example.aveiro_project.Exceptions.DepotMax;
 import com.example.aveiro_project.Exceptions.QuantiteInsufficient;
 import com.example.aveiro_project.Services.OperationService;
@@ -43,13 +44,33 @@ public class OperationRestAPI {
         operationService.deleteOperation(operationId);
     }
 
-    @GetMapping("operationsuser/{userId}")
+    @GetMapping("operations/user/{userId}")
     public List<Operation> operationListByUserId(@PathVariable int userId){
         return operationService.listerOpByUserId(userId);
     }
-    @GetMapping("/operationsday/{date}")
+    @GetMapping("/operations/day/{date}")
     public List<Operation> listerOpDate(@PathVariable("date")
                                             @DateTimeFormat(pattern = "dd.MM.yyyy") Date date){
         return operationService.listerOpDate(date);
+    }
+    @GetMapping("/operations/emballage/entree")
+    public List<Operation> listOpEmbE(){
+        return operationService.listerOpEmb(TypeOp.E);
+    }
+    @GetMapping("/operations/emballage/sortie")
+    public List<Operation> listOpEmbS(){
+        return operationService.listerOpEmb(TypeOp.S);
+    }
+    @GetMapping("/operations/prfini/entree")
+    public List<Operation> listOpPrfE(){
+        return operationService.listerOpPrf(TypeOp.E);
+    }
+    @GetMapping("/operations/prfini/sortie")
+    public List<Operation> listOpPrfS(){
+        return operationService.listerOpPrf(TypeOp.S);
+    }
+    @GetMapping("operations/depots/articles")
+    public List<Object[]> articleDepotEmb(){
+        return operationService.articleDepotEmb();
     }
 }
