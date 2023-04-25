@@ -1,9 +1,8 @@
 package com.example.aveiro_project.Services;
 
 import com.example.aveiro_project.Entities.Operation;
-import com.example.aveiro_project.Entities.Personne;
+import com.example.aveiro_project.Enums.TypeOp;
 import com.example.aveiro_project.Exceptions.DepotMax;
-import com.example.aveiro_project.Exceptions.PersonneNotFoundException;
 import com.example.aveiro_project.Exceptions.QuantiteInsufficient;
 
 import java.util.Date;
@@ -24,4 +23,7 @@ public interface OperationService {
     List<Operation> listerOpDate(Date date);
     List<Operation> listerOpPeriode(Date dateDebut , Date dateFin);
 
+    List<Operation> listerOpEmb(TypeOp typeOp);
+    List<Operation> listerOpPrf(TypeOp typeOp);
+    List<Object[]> articleDepotEmb();
 }
