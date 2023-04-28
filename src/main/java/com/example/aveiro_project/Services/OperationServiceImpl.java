@@ -48,9 +48,10 @@ public class OperationServiceImpl implements OperationService{
     public OperationDTO saveOperation(OperationDTO operationDTO) throws QuantiteInsufficient, DepotMax {
         log.info("Saving New Operation");
         Operation operation=dto.fromOperationDTO(operationDTO);
+        operation.setN_Lot("ET"+ getNumberOfDaysSinceStartOfYear(LocalDate.now())+"C");
+        operation.setDateOpertaion(new Date());
         Optional <Article>opArticle = articleRepository.findById(operation.getArticle().getCode_Article()) ;
         Optional <Depot> opDepo = depotRepository.findById(operation.getDepot().getCode_Depot());
-//        Article article = operation.getArticle();
         if(opArticle != null || opDepo != null){
             Article article = opArticle.get();
             Depot depot = opDepo.get();
@@ -70,8 +71,7 @@ public class OperationServiceImpl implements OperationService{
         articleRepository.save(article);
         operationRepository.save(operation);
         }
-        OperationDTO operationDTO1=dto.fromOperation(operation);
-        return operationDTO1;
+        return operationDTO;
     }
 
     @Override
@@ -85,10 +85,34 @@ public class OperationServiceImpl implements OperationService{
     public OperationDTO updateOperation(OperationDTO operationDTO) throws QuantiteInsufficient, DepotMax {
         // baqi khassha tqad
         Operation operation=dto.fromOperationDTO(operationDTO);
+//        log.info(operation.toString());
         deleteOperation(operationDTO.getIdOperation());
-        saveOperation(operationDTO);
-        return saveOperation(operationDTO);
+        Optional <Article>opArticle = articleRepository.findById(operation.getArticle().getCode_Article()) ;
+        Optional <Depot> opDepo = depotRepository.findById(operation.getDepot().getCode_Depot());
+        if(opArticle != null || opDepo != null){
+            Article article = opArticle.get();
+            Depot depot = opDepo.get();
+            if(operation.getTypeOpr()==TypeOp.E){
+                if (operation.getQuantite()+depot.getQuantiteActuelle()>depot.getQauntiteMax())
+                    throw new DepotMax("quantite max depasse");
+                article.setQuantite_Article(article.getQuantite_Article()+operation.getQuantite());
+                depot.setQuantiteActuelle(depot.getQuantiteActuelle()+operation.getQuantite());
+            } else if (operation.getTypeOpr()==TypeOp.S) {
+                if(article.getQuantite_Article()<operation.getQuantite() )
+                    throw new QuantiteInsufficient("quantite inscufisante");
+                article.setQuantite_Article(article.getQuantite_Article()-operation.getQuantite());
+                depot.setQuantiteActuelle(depot.getQuantiteActuelle()-operation.getQuantite());
+            }
+            operation.setDateOpertaion(new Date());
+            articleRepository.save(article);
+            depotRepository.save(depot);
+        }
+        operation.setN_Lot(operationDTO.getN_Lot());
+        operationRepository.save(operation);
+        OperationDTO operationDTO1=dto.fromOperation(operation);
+        return operationDTO1;
     }
+
 
     @Override
     public void deleteOperation(int operationId) {

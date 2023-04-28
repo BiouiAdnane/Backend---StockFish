@@ -10,6 +10,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -143,6 +144,8 @@ public class AveiroProjectApplication {
 			operation.setRangee(1);
 			operation.setNiveau(2);
 			operation.setAllee(1);
+			operation.setN_Lot("ET"+ getNumberOfDaysSinceStartOfYear(LocalDate.now())+"C");
+			operation.setDateOpertaion(new Date());
 			Jolly.setQuantite_Article(Jolly.getQuantite_Article()+operation.getQuantite());
 			operation.setPersonne(personneRepository.getReferenceById(1));
 			depotEmballage.setQuantiteActuelle(depotEmballage.getQuantiteActuelle()+operation.getQuantite());
@@ -158,6 +161,8 @@ public class AveiroProjectApplication {
 			operation2.setRangee(1);
 			operation2.setNiveau(2);
 			operation2.setAllee(1);
+			operation2.setDateOpertaion(new Date());
+			operation2.setN_Lot("ET"+ getNumberOfDaysSinceStartOfYear(LocalDate.now())+"C");
 			depotEmballage.setQuantiteActuelle(depotEmballage.getQuantiteActuelle()-operation2.getQuantite());
 			operation2.setPersonne(personneRepository.getReferenceById(1));
 			Jolly.setQuantite_Article(Jolly.getQuantite_Article()-operation2.getQuantite());
@@ -173,6 +178,8 @@ public class AveiroProjectApplication {
 			operation3.setRangee(1);
 			operation3.setNiveau(3);
 			operation3.setAllee(1);
+			operation3.setDateOpertaion(new Date());
+			operation3.setN_Lot("ET"+ getNumberOfDaysSinceStartOfYear(LocalDate.now())+"C");
 			depotPrFini.setQuantiteActuelle(depotPrFini.getQuantiteActuelle()+operation3.getQuantite());
 			operation3.setPersonne(personneRepository.getReferenceById(1));
 			Lukuss.setQuantite_Article(Lukus.getQuantite_Article()+operation3.getQuantite());
@@ -188,6 +195,8 @@ public class AveiroProjectApplication {
 			operation4.setRangee(17);
 			operation4.setNiveau(4);
 			operation4.setAllee(11);
+			operation4.setDateOpertaion(new Date());
+			operation4.setN_Lot("ET"+ getNumberOfDaysSinceStartOfYear(LocalDate.now())+"C");
 			depotPrFini.setQuantiteActuelle(depotPrFini.getQuantiteActuelle()+operation4.getQuantite());
 			Lukuss.setQuantite_Article(Lukuss.getQuantite_Article()+operation4.getQuantite());
 			operation4.setPersonne(personneRepository.getReferenceById(2));
@@ -198,4 +207,12 @@ public class AveiroProjectApplication {
 
 		};
 
-	} }
+	}
+	public static long getNumberOfDaysSinceStartOfYear(LocalDate date) {
+
+		LocalDate startOfYear = LocalDate.of(date.getYear(), 1, 1);
+
+
+		return date.toEpochDay() - startOfYear.toEpochDay()+1;
+	}
+}

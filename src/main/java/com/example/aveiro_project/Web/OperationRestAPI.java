@@ -31,7 +31,7 @@ public class OperationRestAPI {
     @GetMapping("/operations/{operationId}")
     public OperationDTO getOperation(@PathVariable int operationId)  {
         return operationService.getOperationId(operationId);
-    }
+        }
 
     @PutMapping("/operations/{operationId}")
     public  OperationDTO updateOperation(@PathVariable int operationId, @RequestBody OperationDTO operationDTO) throws QuantiteInsufficient, DepotMax {

@@ -1,10 +1,16 @@
 package com.example.aveiro_project.DTOS;
 import com.example.aveiro_project.Enums.TypeOp;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+<<<<<<< HEAD
 
 import java.time.LocalDate;
+=======
+import lombok.NoArgsConstructor;
+
+>>>>>>> c379e264e878d85b86780d014acefaf40ae0432f
 import java.util.Date;
-@Data
+@Data @AllArgsConstructor @NoArgsConstructor
 public class OperationDTO {
     private int idOperation;
     private TypeOp typeOpr;
@@ -13,7 +19,7 @@ public class OperationDTO {
     private int code_Depot;
     private int matriculation;
     private int quantite;
-    private String nLot;
+    private String n_Lot;
     private int allee;
     private int rangee;
     private int niveau;
