@@ -1,5 +1,6 @@
 package com.example.aveiro_project.Services;
 
+import com.example.aveiro_project.DTOS.OperationDTO;
 import com.example.aveiro_project.Entities.Article;
 import com.example.aveiro_project.Entities.Depot;
 import com.example.aveiro_project.Entities.Operation;
@@ -9,6 +10,7 @@ import com.example.aveiro_project.Exceptions.QuantiteInsufficient;
 import com.example.aveiro_project.Repository.ArticleRepository;
 import com.example.aveiro_project.Repository.DepotRepository;
 import com.example.aveiro_project.Repository.OperationRepository;
+import com.example.aveiro_project.mappers.OperationMapperImpl;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import lombok.AllArgsConstructor;
@@ -21,6 +23,7 @@ import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -33,17 +36,20 @@ public class OperationServiceImpl implements OperationService{
     private DepotRepository depotRepository;
     private OperationRepository operationRepository;
     private ArticleRepository articleRepository;
-    private EntityManager entityManager;
+    private OperationMapperImpl dto;
     @Override
-    public List<Operation> getOperation() {
-        return operationRepository.findAll();
+    public List<OperationDTO> getOperation() {
+        List<Operation>operations= operationRepository.findAll();
+        return operations.stream().map(operation -> dto.fromOperation(operation)).toList();
+
     }
 
     @Override
-    public Operation saveOperation(Operation operation) throws QuantiteInsufficient, DepotMax {
+    public OperationDTO saveOperation(OperationDTO operationDTO) throws QuantiteInsufficient, DepotMax {
         log.info("Saving New Operation");
-        Optional<Article> opArticle = articleRepository.findById(operation.getArticle().getCode_Article());
-        Optional<Depot> opDepo = depotRepository.findById(operation.getDepot().getCode_Depot());
+        Operation operation=dto.fromOperationDTO(operationDTO);
+        Optional <Article>opArticle = articleRepository.findById(operation.getArticle().getCode_Article()) ;
+        Optional <Depot> opDepo = depotRepository.findById(operation.getDepot().getCode_Depot());
 //        Article article = operation.getArticle();
         if(opArticle != null || opDepo != null){
             Article article = opArticle.get();
@@ -64,25 +70,30 @@ public class OperationServiceImpl implements OperationService{
         articleRepository.save(article);
         operationRepository.save(operation);
         }
-        return operation;
+        OperationDTO operationDTO1=dto.fromOperation(operation);
+        return operationDTO1;
     }
 
     @Override
-    public Operation getOperationId(int operationId) {
-        return operationRepository.findById(operationId).orElse(null);
+    public OperationDTO getOperationId(int operationId) {
+        Operation operation=operationRepository.findById(operationId).orElse(null);
+        OperationDTO operationDTO=dto.fromOperation(operation);
+        return operationDTO;
     }
 
     @Override
-    public Operation updateOperation(Operation operation) throws QuantiteInsufficient, DepotMax {
+    public OperationDTO updateOperation(OperationDTO operationDTO) throws QuantiteInsufficient, DepotMax {
         // baqi khassha tqad
-        operationRepository.deleteById(operation.getIdOperation());
-        return saveOperation(operation);
+        Operation operation=dto.fromOperationDTO(operationDTO);
+        deleteOperation(operationDTO.getIdOperation());
+        saveOperation(operationDTO);
+        return saveOperation(operationDTO);
     }
 
     @Override
     public void deleteOperation(int operationId) {
-        Article article = getOperationId(operationId).getArticle();
-        Operation operation=getOperationId(operationId);
+        Operation operation=dto.fromOperationDTO(getOperationId(operationId));
+        Article article = operation.getArticle();
         if (operation.getTypeOpr()==TypeOp.E)
             article.setQuantite_Article(article.getQuantite_Article()-operation.getQuantite());
         else if (operation.getTypeOpr()==TypeOp.S) {
@@ -94,35 +105,35 @@ public class OperationServiceImpl implements OperationService{
     }
 
     @Override
-    public List<Operation> listerOpByUserId(int userId) {
-
-        return operationRepository.findOperationsByPersonne_Matriculation(userId);
+    public List<OperationDTO> listerOpByUserId(int userId) {
+        List<Operation> operations= operationRepository.findOperationsByPersonne_Matriculation(userId);
+        return operations.stream().map(op->dto.fromOperation(op)).toList();
     }
 
     @Override
-    public List<Operation> listerOpDate(Date date) {
-        return operationRepository.findOperationByDateOpertaionEquals(date) ;
+    public List<OperationDTO> listerOpDate(Date date) {
+        List<Operation> operations= operationRepository.findOperationByDateOpertaionEquals(date) ;
+        return operations.stream().map(op->dto.fromOperation(op)).toList();
     }
 
     @Override
-    public List<Operation> listerOpPeriode(Date dateDebut, Date dateFin) {
-        return operationRepository.findOperationsByDateOpertaionIsBetween(dateDebut,dateFin) ;
+    public List<OperationDTO> listerOpPeriode(Date dateDebut, Date dateFin) {
+        List<Operation> operations=operationRepository.findOperationsByDateOpertaionIsBetween(dateDebut,dateFin) ;
+        return operations.stream().map(op->dto.fromOperation(op)).toList();
     }
 
     @Override
-    public List<Operation> listerOpEmb(TypeOp typeOp) {
-//        List<Operation> operations= operationRepository.findOperationsByTypeOprIs(typeOp);
+    public List<OperationDTO> listerOpEmb(TypeOp typeOp) {
         Depot depot = depotRepository.getReferenceById(1);
         List<Operation>operations=operationRepository.findByTypeOprAndDepot(typeOp,depot);
-        return operations;
+        return operations.stream().map(op->dto.fromOperation(op)).toList();
     }
 
     @Override
-    public List<Operation> listerOpPrf(TypeOp typeOp) {
-//        List<Operation> operations= operationRepository.findOperationsByTypeOprIs(typeOp);
+    public List<OperationDTO> listerOpPrf(TypeOp typeOp) {
         Depot depot = depotRepository.getReferenceById(2);
         List<Operation> operations= operationRepository.findByTypeOprAndDepot(typeOp,depot);
-        return operations;
+        return operations.stream().map(op->dto.fromOperation(op)).toList() ;
     }
 
     @Override
