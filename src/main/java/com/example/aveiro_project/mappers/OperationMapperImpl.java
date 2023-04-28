@@ -24,9 +24,9 @@ public class OperationMapperImpl {
         OperationDTO operationDTO = new OperationDTO();
         BeanUtils.copyProperties(operation,operationDTO);
         operationDTO.setMatriculation(operation.getPersonne().getMatriculation());
-        operationDTO.setCodeArticle(operation.getArticle().getCode_Article());
+        operationDTO.setCode_Article(operation.getArticle().getCode_Article());
         operationDTO.setDesignation(operation.getArticle().getDesigniation());
-        operationDTO.setCodeDepot(operation.getDepot().getCode_Depot());
+        operationDTO.setCode_Depot(operation.getDepot().getCode_Depot());
         return operationDTO;
     }
     public Operation fromOperationDTO(OperationDTO operationDTO){
@@ -34,9 +34,9 @@ public class OperationMapperImpl {
         BeanUtils.copyProperties(operationDTO,operation);
         Personne personne= personneRepository.findById(operationDTO.getMatriculation()).orElse(null) ;
         operation.setPersonne(personne);
-        Article article = articleRepository.findById(operationDTO.getCodeArticle()).orElse(null);
+        Article article = articleRepository.findById(operationDTO.getCode_Article()).orElse(null);
         operation.setArticle(article);
-        Depot depot=depotRepository.findById(operationDTO.getCodeDepot()).orElse(null);
+        Depot depot=depotRepository.findById(operationDTO.getCode_Depot()).orElse(null);
         operation.setDepot(depot);
         return operation;
     }
