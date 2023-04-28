@@ -14,7 +14,7 @@ public class OperationDTO {
     private int code_Depot;
     private int matriculation;
     private int quantite;
-    private String nLot;
+    private String n_Lot;
     private int allee;
     private int rangee;
     private int niveau;

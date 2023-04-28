@@ -6,6 +6,7 @@ import com.example.aveiro_project.Enums.TypeOp;
 import com.example.aveiro_project.Exceptions.DepotMax;
 import com.example.aveiro_project.Exceptions.QuantiteInsufficient;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -29,4 +30,11 @@ public interface OperationService {
     List<Object[]> articleDepotEmb();
 
     List<Object[]> articleDepotPrf();
+    public static long getNumberOfDaysSinceStartOfYear(LocalDate date) {
+
+        LocalDate startOfYear = LocalDate.of(date.getYear(), 1, 1);
+
+
+        return date.toEpochDay() - startOfYear.toEpochDay()+1;
+    }
 }

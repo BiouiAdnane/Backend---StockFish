@@ -28,18 +28,9 @@ public class Operation {
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Personne personne;
     private int quantite;
-    private String nLot= "ET"+ getNumberOfDaysSinceStartOfYear(LocalDate.now())+"C";
+    private String n_Lot;
     private int allee;
     private int rangee;
     private int niveau;
-    private Date dateOpertaion= new Date();
-
-    public static long getNumberOfDaysSinceStartOfYear(LocalDate date) {
-
-        LocalDate startOfYear = LocalDate.of(date.getYear(), 1, 1);
-
-
-        return date.toEpochDay() - startOfYear.toEpochDay()+1;
-    }
-
+    private Date dateOpertaion;
 }
