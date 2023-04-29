@@ -3,6 +3,7 @@ package com.example.aveiro_project.Services;
 import com.example.aveiro_project.DTOS.OperationDTO;
 import com.example.aveiro_project.Entities.Operation;
 import com.example.aveiro_project.Enums.TypeOp;
+import com.example.aveiro_project.Exceptions.BlockUsed;
 import com.example.aveiro_project.Exceptions.DepotMax;
 import com.example.aveiro_project.Exceptions.QuantiteInsufficient;
 
@@ -13,7 +14,7 @@ import java.util.List;
 public interface OperationService {
     List<OperationDTO> getOperation();
 
-    OperationDTO saveOperation(OperationDTO operationDTO) throws QuantiteInsufficient, DepotMax;
+    OperationDTO saveOperation(OperationDTO operationDTO) throws QuantiteInsufficient, DepotMax, BlockUsed;
 
     OperationDTO getOperationId(int operationId) ;
 
