@@ -2,13 +2,9 @@ package com.example.aveiro_project.DTOS;
 import com.example.aveiro_project.Enums.TypeOp;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-<<<<<<< HEAD
-
-import java.time.LocalDate;
-=======
 import lombok.NoArgsConstructor;
 
->>>>>>> c379e264e878d85b86780d014acefaf40ae0432f
+
 import java.util.Date;
 @Data @AllArgsConstructor @NoArgsConstructor
 public class OperationDTO {
