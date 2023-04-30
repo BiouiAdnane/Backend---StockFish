@@ -2,6 +2,7 @@ package com.example.aveiro_project.Web;
 
 import com.example.aveiro_project.DTOS.OperationDTO;
 import com.example.aveiro_project.Enums.TypeOp;
+import com.example.aveiro_project.Exceptions.BlockUsed;
 import com.example.aveiro_project.Exceptions.DepotMax;
 import com.example.aveiro_project.Exceptions.QuantiteInsufficient;
 import com.example.aveiro_project.Services.OperationService;
@@ -19,7 +20,7 @@ public class OperationRestAPI {
     }
 
     @PostMapping("/operations")
-    public OperationDTO saveOperation(@RequestBody OperationDTO operationDTO) throws QuantiteInsufficient, DepotMax {
+    public OperationDTO saveOperation(@RequestBody OperationDTO operationDTO) throws QuantiteInsufficient, DepotMax, BlockUsed {
         return operationService.saveOperation(operationDTO);
     }
 

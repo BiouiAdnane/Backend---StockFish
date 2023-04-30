@@ -5,6 +5,7 @@ import com.example.aveiro_project.Entities.Article;
 import com.example.aveiro_project.Entities.Depot;
 import com.example.aveiro_project.Entities.Operation;
 import com.example.aveiro_project.Enums.TypeOp;
+import com.example.aveiro_project.Exceptions.BlockUsed;
 import com.example.aveiro_project.Exceptions.DepotMax;
 import com.example.aveiro_project.Exceptions.QuantiteInsufficient;
 import com.example.aveiro_project.Repository.ArticleRepository;
@@ -45,33 +46,35 @@ public class OperationServiceImpl implements OperationService{
     }
 
     @Override
-    public OperationDTO saveOperation(OperationDTO operationDTO) throws QuantiteInsufficient, DepotMax {
-        log.info("Saving New Operation");
+    public OperationDTO saveOperation(OperationDTO operationDTO) throws QuantiteInsufficient, DepotMax, BlockUsed {
         Operation operation=dto.fromOperationDTO(operationDTO);
-        operation.setN_Lot("ET"+ getNumberOfDaysSinceStartOfYear(LocalDate.now())+"C");
-        operation.setDateOpertaion(new Date());
-        Optional <Article>opArticle = articleRepository.findById(operation.getArticle().getCode_Article()) ;
-        Optional <Depot> opDepo = depotRepository.findById(operation.getDepot().getCode_Depot());
-        if(opArticle.isPresent() || opDepo.isPresent()){
-            Article article = opArticle.get();
-            Depot depot = opDepo.get();
-            if(operation.getTypeOpr()==TypeOp.E){
-                if (operation.getQuantite()+depot.getQuantiteActuelle()>depot.getQauntiteMax())
-                    throw new DepotMax("quantite max depasse");
-                article.setQuantite_Article(article.getQuantite_Article()+operation.getQuantite());
-                depot.setQuantiteActuelle(depot.getQuantiteActuelle()+operation.getQuantite());
-            } else if (operation.getTypeOpr()==TypeOp.S) {
-                if(article.getQuantite_Article()<operation.getQuantite() )
-                    throw new QuantiteInsufficient("quantite inscufisante");
-                article.setQuantite_Article(article.getQuantite_Article()-operation.getQuantite());
-                depot.setQuantiteActuelle(depot.getQuantiteActuelle()-operation.getQuantite());
-            }
+        if (disponibleBlock(operation.getAllee(), operation.getRangee(), operation.getNiveau())){
+            log.info("Saving New Operation");
+            operation.setN_Lot("ET"+ getNumberOfDaysSinceStartOfYear(LocalDate.now())+"C");
+            operation.setDateOpertaion(new Date());
+            Optional <Article>opArticle = articleRepository.findById(operation.getArticle().getCode_Article()) ;
+            Optional <Depot> opDepo = depotRepository.findById(operation.getDepot().getCode_Depot());
+            if(opArticle.isPresent() || opDepo.isPresent()){
+                Article article = opArticle.get();
+                Depot depot = opDepo.get();
+                if(operation.getTypeOpr()==TypeOp.E){
+                    if (operation.getQuantite()+depot.getQuantiteActuelle()>depot.getQauntiteMax())
+                        throw new DepotMax("quantite max depasse");
+                    article.setQuantite_Article(article.getQuantite_Article()+operation.getQuantite());
+                    depot.setQuantiteActuelle(depot.getQuantiteActuelle()+operation.getQuantite());
+                } else if (operation.getTypeOpr()==TypeOp.S) {
+                    if(article.getQuantite_Article()<operation.getQuantite() )
+                        throw new QuantiteInsufficient("quantite inscufisante");
+                    article.setQuantite_Article(article.getQuantite_Article()-operation.getQuantite());
+                    depot.setQuantiteActuelle(depot.getQuantiteActuelle()-operation.getQuantite());
+                }
 
-        depotRepository.save(depot);
-        articleRepository.save(article);
-        operationRepository.save(operation);
-        }
-        return operationDTO;
+            depotRepository.save(depot);
+            articleRepository.save(article);
+            operationRepository.save(operation);
+            }
+            return operationDTO;}
+        throw new BlockUsed("cet emplacement est deja utilise") ;
     }
 @Override
 public OperationDTO updateOperation(OperationDTO operationDTO) throws QuantiteInsufficient, DepotMax {
@@ -234,6 +237,10 @@ public OperationDTO updateOperation(OperationDTO operationDTO) throws QuantiteIn
 
 
         return date.toEpochDay() - startOfYear.toEpochDay()+1;
+    }
+    public boolean disponibleBlock(int allee,int rangee,int niveau){
+        List<Operation> operations = operationRepository.findAllByAlleeAndRangeeAndNiveau(allee, rangee, niveau);
+        return operations.isEmpty();
     }
 
 }
