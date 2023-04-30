@@ -35,7 +35,7 @@ public class OperationRestAPI {
         }
 
     @PutMapping("/operations/{operationId}")
-    public  OperationDTO updateOperation(@PathVariable int operationId, @RequestBody OperationDTO operationDTO) throws QuantiteInsufficient, DepotMax {
+    public  OperationDTO updateOperation(@PathVariable int operationId, @RequestBody OperationDTO operationDTO) throws QuantiteInsufficient, DepotMax, BlockUsed {
         operationDTO.setIdOperation(operationId);
         return operationService.updateOperation(operationDTO);
     }
@@ -78,4 +78,5 @@ public class OperationRestAPI {
     public List<Object[]> articleDepotPrF(){
         return operationService.articleDepotPrf();
     }
+
 }

@@ -25,6 +25,7 @@ public class Depot {
     @OneToMany(mappedBy = "depot")
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private List<Operation> operations;
-//    @OneToMany(mappedBy = "depot")
-//    private List<Article>articles;
+    @OneToMany(mappedBy = "depot")
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    private List<Block> blocks;
 }
