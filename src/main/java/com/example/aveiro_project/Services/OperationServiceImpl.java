@@ -2,6 +2,7 @@ package com.example.aveiro_project.Services;
 
 import com.example.aveiro_project.DTOS.OperationDTO;
 import com.example.aveiro_project.Entities.Article;
+import com.example.aveiro_project.Entities.Block;
 import com.example.aveiro_project.Entities.Depot;
 import com.example.aveiro_project.Entities.Operation;
 import com.example.aveiro_project.Enums.TypeOp;
@@ -9,6 +10,7 @@ import com.example.aveiro_project.Exceptions.BlockUsed;
 import com.example.aveiro_project.Exceptions.DepotMax;
 import com.example.aveiro_project.Exceptions.QuantiteInsufficient;
 import com.example.aveiro_project.Repository.ArticleRepository;
+import com.example.aveiro_project.Repository.BlockRepo;
 import com.example.aveiro_project.Repository.DepotRepository;
 import com.example.aveiro_project.Repository.OperationRepository;
 import com.example.aveiro_project.mappers.OperationMapperImpl;
@@ -25,6 +27,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 @Service
 @Transactional
@@ -38,6 +41,7 @@ public class OperationServiceImpl implements OperationService{
     private OperationRepository operationRepository;
     private ArticleRepository articleRepository;
     private OperationMapperImpl dto;
+    private BlockRepo blockRepo;
     @Override
     public List<OperationDTO> getOperation() {
         List<Operation>operations= operationRepository.findAll();
@@ -48,7 +52,7 @@ public class OperationServiceImpl implements OperationService{
     @Override
     public OperationDTO saveOperation(OperationDTO operationDTO) throws QuantiteInsufficient, DepotMax, BlockUsed {
         Operation operation=dto.fromOperationDTO(operationDTO);
-        if (disponibleBlock(operation.getAllee(), operation.getRangee(), operation.getNiveau())){
+        Block block = blockRepo.findBlockByAlleeAndRangeeAndNiveauAndDepot(operation.getAllee(), operation.getRangee(), operation.getNiveau(), operation.getDepot());
             log.info("Saving New Operation");
             operation.setN_Lot("ET"+ getNumberOfDaysSinceStartOfYear(LocalDate.now())+"C");
             operation.setDateOpertaion(new Date());
@@ -60,11 +64,29 @@ public class OperationServiceImpl implements OperationService{
                 if(operation.getTypeOpr()==TypeOp.E){
                     if (operation.getQuantite()+depot.getQuantiteActuelle()>depot.getQauntiteMax())
                         throw new DepotMax("quantite max depasse");
+                    if(block !=null){
+                        throw new BlockUsed("cet emplacement est deja utilise");
+                    }
+                    Block block1=new Block();
+                    block1.setAllee(operation.getAllee());
+                    block1.setRangee(operation.getRangee());
+                    block1.setNiveau(operation.getNiveau());
+                    block1.setDepot(operation.getDepot());
+                    block1.setQuantite(operation.getQuantite());
                     article.setQuantite_Article(article.getQuantite_Article()+operation.getQuantite());
                     depot.setQuantiteActuelle(depot.getQuantiteActuelle()+operation.getQuantite());
+                    blockRepo.save(block1);
                 } else if (operation.getTypeOpr()==TypeOp.S) {
                     if(article.getQuantite_Article()<operation.getQuantite() )
                         throw new QuantiteInsufficient("quantite inscufisante");
+                    if (block==null){
+                        throw new BlockUsed("impossiiiible");
+                    }
+                    if (block.getQuantite()==operation.getQuantite())
+                        blockRepo.deleteById(block.getId_Block());
+                    else if (block.getQuantite()>operation.getQuantite()){
+                    block.setQuantite(block.getQuantite()-operation.getQuantite());
+                    blockRepo.save(block);}
                     article.setQuantite_Article(article.getQuantite_Article()-operation.getQuantite());
                     depot.setQuantiteActuelle(depot.getQuantiteActuelle()-operation.getQuantite());
                 }
@@ -73,24 +95,24 @@ public class OperationServiceImpl implements OperationService{
             articleRepository.save(article);
             operationRepository.save(operation);
             }
-            return operationDTO;}
-        throw new BlockUsed("cet emplacement est deja utilise") ;
+            return operationDTO;
     }
 @Override
-public OperationDTO updateOperation(OperationDTO operationDTO) throws QuantiteInsufficient, DepotMax {
-    log.info("Updating Operation");
+public OperationDTO updateOperation(OperationDTO operationDTO) throws QuantiteInsufficient, DepotMax, BlockUsed {
     Operation operation = dto.fromOperationDTO(operationDTO) ;
+    Block block = blockRepo.findBlockByAlleeAndRangeeAndNiveauAndDepot(operation.getAllee(), operation.getRangee(), operation.getNiveau(), operation.getDepot());
 
-        // Update operation properties
-        operation.setQuantite(operationDTO.getQuantite());
-        operation.setAllee(operationDTO.getAllee());
-        operation.setRangee(operationDTO.getRangee());
-        operation.setNiveau(operationDTO.getNiveau());
-        operation.setDateOpertaion(new Date());
+    // Update operation properties
+//        operation.setQuantite(operationDTO.getQuantite());
+//        operation.setAllee(operationDTO.getAllee());
+//        operation.setRangee(operationDTO.getRangee());
+//        operation.setNiveau(operationDTO.getNiveau());
+    operation.setDateOpertaion(new Date());
 
-        // Update related entities if necessary
-        if (operation.getArticle().getCode_Article() !=operationDTO.getCode_Article()) {
-            Optional<Article> opArticle = articleRepository.findById(operationDTO.getCode_Article());
+    // Update related entities if necessary
+    if (operation.getArticle().getCode_Article() !=operationDTO.getCode_Article()) {
+        log.info("Updating Operation");
+        Optional<Article> opArticle = articleRepository.findById(operationDTO.getCode_Article());
 
                 Article article = opArticle.get();
 
@@ -127,6 +149,7 @@ public OperationDTO updateOperation(OperationDTO operationDTO) throws QuantiteIn
         operationRepository.save(operation);
         OperationDTO operationDTO1=dto.fromOperation(operation);
         return operationDTO1;
+    throw new BlockUsed("cet emplacement est deja utilise");
 
 }
 
@@ -238,9 +261,67 @@ public OperationDTO updateOperation(OperationDTO operationDTO) throws QuantiteIn
 
         return date.toEpochDay() - startOfYear.toEpochDay()+1;
     }
-    public boolean disponibleBlock(int allee,int rangee,int niveau){
-        List<Operation> operations = operationRepository.findAllByAlleeAndRangeeAndNiveau(allee, rangee, niveau);
+    public boolean disponibleBlock(int allee,int rangee,int niveau,Depot depot){
+        List<Operation> operations = operationRepository.findAllByAlleeAndRangeeAndNiveauAndDepotEquals(allee, rangee, niveau,depot);
         return operations.isEmpty();
     }
+    public List<Integer> getAvailableAllee(Depot depot) {
+        List<Integer> allees = IntStream.rangeClosed(1, depot.getNbrMaxAllee())
+                .boxed()
+                .collect(Collectors.toList());
+        List<Operation> operations = depot.getOperations();
+
+        for (Operation operation : operations) {
+            int allee = operation.getAllee();
+            if (allees.contains(allee)) {
+                List<Integer> rangees = getAvailableRangee(depot, allee);
+                if (rangees.isEmpty()) {
+                    allees.remove(Integer.valueOf(allee));
+                }
+            }
+        }
+        return allees;
+    }
+
+    public List<Integer> getAvailableRangee(Depot depot, int allee) {
+        List<Integer> rangees = IntStream.rangeClosed(1, depot.getNbrMaxRangee())
+                .boxed()
+                .collect(Collectors.toList());
+        List<Operation> operations = depot.getOperations();
+
+        for (Operation operation : operations) {
+            int operationAllee = operation.getAllee();
+            int operationRangee = operation.getRangee();
+            if (operationAllee == allee && rangees.contains(operationRangee)) {
+                List<Integer> niveaux = getAvailableNiveau(depot, allee, operationRangee);
+                if (niveaux.isEmpty()) {
+                    rangees.remove(Integer.valueOf(operationRangee));
+                }
+            }
+        }
+        return rangees;
+    }
+
+    public List<Integer> getAvailableNiveau(Depot depot, int allee, int rangee) {
+        List<Integer> niveaux = IntStream.rangeClosed(1, depot.getNbrMaxNiveau())
+                .boxed()
+                .collect(Collectors.toList());
+        List<Operation> operations = depot.getOperations();
+
+        for (Operation operation : operations) {
+            int operationAllee = operation.getAllee();
+            int operationRangee = operation.getRangee();
+            int operationNiveau = operation.getNiveau();
+            if (operationAllee == allee && operationRangee == rangee && niveaux.contains(operationNiveau)) {
+                niveaux.remove(Integer.valueOf(operationNiveau));
+            }
+        }
+        return niveaux;
+    }
+    public boolean blockExists(Block block) {
+        Optional<Block> existingBlock = blockRepo.findById(block.getId_Block());
+        return existingBlock.isPresent();
+    }
+
 
 }

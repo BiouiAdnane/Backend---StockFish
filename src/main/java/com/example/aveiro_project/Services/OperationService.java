@@ -18,7 +18,7 @@ public interface OperationService {
 
     OperationDTO getOperationId(int operationId) ;
 
-    OperationDTO updateOperation(OperationDTO operationDTO) throws QuantiteInsufficient, DepotMax;
+    OperationDTO updateOperation(OperationDTO operationDTO) throws QuantiteInsufficient, DepotMax, BlockUsed;
 
     void deleteOperation(int operationId);
 

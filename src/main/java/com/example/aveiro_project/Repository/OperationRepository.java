@@ -1,6 +1,7 @@
 package com.example.aveiro_project.Repository;
 
 import com.example.aveiro_project.Entities.Article;
+import com.example.aveiro_project.Entities.Block;
 import com.example.aveiro_project.Entities.Depot;
 import com.example.aveiro_project.Entities.Operation;
 import com.example.aveiro_project.Enums.TypeOp;
@@ -26,5 +27,5 @@ public interface OperationRepository extends JpaRepository<Operation,Integer > {
 
     List<Object[]> finddipoprf();
 
-    List<Operation> findAllByAlleeAndRangeeAndNiveau (int allee, int rangee, int niveau);
+    List<Operation> findAllByAlleeAndRangeeAndNiveauAndDepotEquals (int allee, int rangee, int niveau,Depot depot);
 }
