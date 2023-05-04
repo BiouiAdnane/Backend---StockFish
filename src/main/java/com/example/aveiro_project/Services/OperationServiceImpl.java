@@ -149,7 +149,6 @@ public OperationDTO updateOperation(OperationDTO operationDTO) throws QuantiteIn
         operationRepository.save(operation);
         OperationDTO operationDTO1=dto.fromOperation(operation);
         return operationDTO1;
-    throw new BlockUsed("cet emplacement est deja utilise");
 
 }
 
