@@ -38,4 +38,10 @@ public interface OperationService {
 
         return date.toEpochDay() - startOfYear.toEpochDay()+1;
     }
+
+    List<Integer> getAvailableAllee(int code_Depot);
+
+    List<Integer> getAvailableRangee(int code_Depot, int allee);
+
+    List<Integer> getAvailableNiveau(int code_Depot, int allee, int rangee);
 }

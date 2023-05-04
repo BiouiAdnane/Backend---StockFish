@@ -14,11 +14,9 @@ import com.example.aveiro_project.Repository.BlockRepo;
 import com.example.aveiro_project.Repository.DepotRepository;
 import com.example.aveiro_project.Repository.OperationRepository;
 import com.example.aveiro_project.mappers.OperationMapperImpl;
-import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -149,7 +147,7 @@ public OperationDTO updateOperation(OperationDTO operationDTO) throws QuantiteIn
         operationRepository.save(operation);
         OperationDTO operationDTO1=dto.fromOperation(operation);
         return operationDTO1;
-    throw new BlockUsed("cet emplacement est deja utilise");
+
 
 }
 
@@ -265,7 +263,9 @@ public OperationDTO updateOperation(OperationDTO operationDTO) throws QuantiteIn
         List<Operation> operations = operationRepository.findAllByAlleeAndRangeeAndNiveauAndDepotEquals(allee, rangee, niveau,depot);
         return operations.isEmpty();
     }
-    public List<Integer> getAvailableAllee(Depot depot) {
+    @Override
+    public List<Integer> getAvailableAllee(int code_Depot) {
+        Depot depot=depotRepository.findById(code_Depot).orElse(null) ;
         List<Integer> allees = IntStream.rangeClosed(1, depot.getNbrMaxAllee())
                 .boxed()
                 .collect(Collectors.toList());
@@ -274,7 +274,7 @@ public OperationDTO updateOperation(OperationDTO operationDTO) throws QuantiteIn
         for (Operation operation : operations) {
             int allee = operation.getAllee();
             if (allees.contains(allee)) {
-                List<Integer> rangees = getAvailableRangee(depot, allee);
+                List<Integer> rangees = getAvailableRangee(code_Depot, allee);
                 if (rangees.isEmpty()) {
                     allees.remove(Integer.valueOf(allee));
                 }
@@ -282,8 +282,9 @@ public OperationDTO updateOperation(OperationDTO operationDTO) throws QuantiteIn
         }
         return allees;
     }
-
-    public List<Integer> getAvailableRangee(Depot depot, int allee) {
+    @Override
+    public List<Integer> getAvailableRangee(int code_Depot, int allee) {
+        Depot depot=depotRepository.findById(code_Depot).orElse(null);
         List<Integer> rangees = IntStream.rangeClosed(1, depot.getNbrMaxRangee())
                 .boxed()
                 .collect(Collectors.toList());
@@ -293,7 +294,7 @@ public OperationDTO updateOperation(OperationDTO operationDTO) throws QuantiteIn
             int operationAllee = operation.getAllee();
             int operationRangee = operation.getRangee();
             if (operationAllee == allee && rangees.contains(operationRangee)) {
-                List<Integer> niveaux = getAvailableNiveau(depot, allee, operationRangee);
+                List<Integer> niveaux = getAvailableNiveau(code_Depot, allee, operationRangee);
                 if (niveaux.isEmpty()) {
                     rangees.remove(Integer.valueOf(operationRangee));
                 }
@@ -301,8 +302,9 @@ public OperationDTO updateOperation(OperationDTO operationDTO) throws QuantiteIn
         }
         return rangees;
     }
-
-    public List<Integer> getAvailableNiveau(Depot depot, int allee, int rangee) {
+    @Override
+    public List<Integer> getAvailableNiveau(int code_Depot, int allee, int rangee) {
+        Depot depot=depotRepository.findById(code_Depot).orElse(null) ;
         List<Integer> niveaux = IntStream.rangeClosed(1, depot.getNbrMaxNiveau())
                 .boxed()
                 .collect(Collectors.toList());

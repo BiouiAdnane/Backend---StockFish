@@ -78,5 +78,17 @@ public class OperationRestAPI {
     public List<Object[]> articleDepotPrF(){
         return operationService.articleDepotPrf();
     }
+    @GetMapping("/operations/allees/{code_Depot}")
+    public List<Integer> alleesDispo(@PathVariable int code_Depot){
+        return operationService.getAvailableAllee(code_Depot);
+    }
+    @GetMapping("/operations/allees/rangees/{code_Depot}/{allee}")
+    public List<Integer> rangeesDispo(@PathVariable int code_Depot,@PathVariable int allee) {
+        return operationService.getAvailableRangee(code_Depot, allee);
+    }
+    @GetMapping("/operations/allees/rangees/niveaux/{code_Depot}/{allee}/{rangee}")
+    public List<Integer> niveauxDispo(@PathVariable int code_Depot,@PathVariable int allee,@PathVariable int rangee ){
+        return operationService.getAvailableNiveau(code_Depot, allee, rangee);
+    }
 
 }
