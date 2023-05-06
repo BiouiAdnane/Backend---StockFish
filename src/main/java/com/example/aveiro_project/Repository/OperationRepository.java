@@ -28,4 +28,5 @@ public interface OperationRepository extends JpaRepository<Operation,Integer > {
     List<Object[]> finddipoprf();
 
     List<Operation> findAllByAlleeAndRangeeAndNiveauAndDepotEquals (int allee, int rangee, int niveau,Depot depot);
+    List<Operation> findOperationsByDepot(Depot depot) ;
 }
