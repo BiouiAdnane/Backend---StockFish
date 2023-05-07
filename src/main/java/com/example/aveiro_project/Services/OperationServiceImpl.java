@@ -320,6 +320,14 @@ public OperationDTO updateOperation(OperationDTO operationDTO) throws QuantiteIn
         }
         return niveaux;
     }
+
+    @Override
+    public List<OperationDTO> listerOpDepot(int id) {
+        Depot depot=depotRepository.findById(id).orElse(null) ;
+        List<Operation> operations= operationRepository.findOperationsByDepot(depot);
+        return operations.stream().map(op->dto.fromOperation(op)).toList();
+    }
+
     public boolean blockExists(Block block) {
         Optional<Block> existingBlock = blockRepo.findById(block.getId_Block());
         return existingBlock.isPresent();

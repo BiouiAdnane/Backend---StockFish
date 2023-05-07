@@ -44,4 +44,6 @@ public interface OperationService {
     List<Integer> getAvailableRangee(int code_Depot, int allee);
 
     List<Integer> getAvailableNiveau(int code_Depot, int allee, int rangee);
+
+    List<OperationDTO> listerOpDepot(int id);
 }
