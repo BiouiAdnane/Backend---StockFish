@@ -1,4 +1,6 @@
 package com.example.aveiro_project.Entities;
+import com.example.aveiro_project.Enums.SizeArticle;
+import com.example.aveiro_project.Enums.TypeArticle;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -15,6 +17,10 @@ public class Article {
     private int code_Article;
     private String designiation;
     private int quantite_Article;
+    @Enumerated(EnumType.STRING)
+    private TypeArticle typeArticle;
+    @Enumerated(EnumType.STRING)
+    private SizeArticle size;
     @ManyToOne
     private Ingredient ingredient;
     @ManyToOne

@@ -4,6 +4,8 @@ import com.example.aveiro_project.Entities.*;
 import com.example.aveiro_project.Enums.*;
 import com.example.aveiro_project.Exceptions.DepotMax;
 import com.example.aveiro_project.Repository.*;
+import com.example.aveiro_project.Services.PaletteService;
+import lombok.Builder;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.query.sqm.ConstructorEntityArgumentMode;
 import org.springframework.boot.CommandLineRunner;
@@ -29,7 +31,8 @@ public class AveiroProjectApplication {
 							OperationRepository operationRepository,
 							ArticleRepository articleRepository,
 							FamilleRepo familleRepo,
-							BlockRepo blockRepo ){
+							BlockRepo blockRepo,
+							PaletteService paletteService){
 		return args -> {
 			Stream.of("Adnan", "Ahmed", "Mourad","Othman").forEach(name->{
 				Personne personne= new Personne();
@@ -232,6 +235,15 @@ public class AveiroProjectApplication {
 			depotRepository.save(depotPrFini);
 
 
+
+			//PALETTES
+
+			Palette palette_Big =new Palette(1,3000,SizeArticle.Big);
+			Palette palette_Medium= new Palette(2,4000,SizeArticle.Medium);
+			Palette palette_Small=new Palette(3,5000,SizeArticle.Small);
+			paletteService.updatePalette(palette_Small);
+			paletteService.updatePalette(palette_Big);
+			paletteService.updatePalette(palette_Medium);
 		};
 
 	}
