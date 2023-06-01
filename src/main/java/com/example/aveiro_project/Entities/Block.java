@@ -3,9 +3,10 @@ package com.example.aveiro_project.Entities;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
+@Builder
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -20,4 +21,6 @@ public class Block {
     @ManyToOne
     private Depot depot;
     private int quantite;
+    @OneToOne
+    private Palette palette;
 }

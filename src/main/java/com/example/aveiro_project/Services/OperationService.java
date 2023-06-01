@@ -1,5 +1,6 @@
 package com.example.aveiro_project.Services;
 
+import com.example.aveiro_project.DTOS.EntreeDTO;
 import com.example.aveiro_project.DTOS.OperationDTO;
 import com.example.aveiro_project.Entities.Operation;
 import com.example.aveiro_project.Enums.TypeOp;
@@ -46,4 +47,6 @@ public interface OperationService {
     List<Integer> getAvailableNiveau(int code_Depot, int allee, int rangee);
 
     List<OperationDTO> listerOpDepot(int id);
+
+    EntreeDTO nombreDop(int code_Article, int qte);
 }

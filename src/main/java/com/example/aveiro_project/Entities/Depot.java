@@ -3,6 +3,7 @@ package com.example.aveiro_project.Entities;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -12,6 +13,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@Builder
 public class Depot {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
