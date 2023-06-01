@@ -1,5 +1,6 @@
 package com.example.aveiro_project.Web;
 
+import com.example.aveiro_project.DTOS.EntreeDTO;
 import com.example.aveiro_project.DTOS.OperationDTO;
 import com.example.aveiro_project.Enums.TypeOp;
 import com.example.aveiro_project.Exceptions.BlockUsed;
@@ -94,5 +95,9 @@ public class OperationRestAPI {
     public List<OperationDTO> OpDepots(@PathVariable int id){
         return operationService.listerOpDepot(id);
     }
-
+    @GetMapping("/operations/depots/{code_Article}/{qte}")
+    public EntreeDTO NbOp(@PathVariable int code_Article,
+                                @PathVariable int qte){
+        return operationService.nombreDop(code_Article, qte);
+    }
 }

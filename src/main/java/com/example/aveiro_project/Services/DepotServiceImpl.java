@@ -16,6 +16,7 @@ public class DepotServiceImpl implements DepotService{
     private DepotRepository depotRepository;
     @Override
     public Depot saveDepot(Depot depot) {
+        depot.setQauntiteMax(depot.getNbrMaxAllee()* depot.getNbrMaxRangee()* depot.getNbrMaxNiveau());
         return depotRepository.save(depot);
     }
 
@@ -36,6 +37,7 @@ public class DepotServiceImpl implements DepotService{
 
     @Override
     public Depot updateDepot(Depot depot) throws DepotNotFoundException {
+        depot.setQauntiteMax(depot.getNbrMaxAllee()* depot.getNbrMaxRangee()* depot.getNbrMaxNiveau());
         return depotRepository.save(depot);
     }
 

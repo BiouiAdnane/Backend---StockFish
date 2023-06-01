@@ -1,12 +1,13 @@
 package com.example.aveiro_project.DTOS;
 import com.example.aveiro_project.Enums.TypeOp;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 
 import java.util.Date;
-@Data @AllArgsConstructor @NoArgsConstructor
+@Data @AllArgsConstructor @NoArgsConstructor @Builder
 public class OperationDTO {
     private int idOperation;
     private TypeOp typeOpr;

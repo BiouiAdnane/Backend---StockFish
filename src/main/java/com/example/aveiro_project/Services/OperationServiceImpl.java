@@ -1,5 +1,6 @@
 package com.example.aveiro_project.Services;
 
+import com.example.aveiro_project.DTOS.EntreeDTO;
 import com.example.aveiro_project.DTOS.OperationDTO;
 import com.example.aveiro_project.Entities.Article;
 import com.example.aveiro_project.Entities.Block;
@@ -9,10 +10,7 @@ import com.example.aveiro_project.Enums.TypeOp;
 import com.example.aveiro_project.Exceptions.BlockUsed;
 import com.example.aveiro_project.Exceptions.DepotMax;
 import com.example.aveiro_project.Exceptions.QuantiteInsufficient;
-import com.example.aveiro_project.Repository.ArticleRepository;
-import com.example.aveiro_project.Repository.BlockRepo;
-import com.example.aveiro_project.Repository.DepotRepository;
-import com.example.aveiro_project.Repository.OperationRepository;
+import com.example.aveiro_project.Repository.*;
 import com.example.aveiro_project.mappers.OperationMapperImpl;
 import jakarta.persistence.PersistenceContext;
 import lombok.AllArgsConstructor;
@@ -21,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -40,6 +39,7 @@ public class OperationServiceImpl implements OperationService{
     private ArticleRepository articleRepository;
     private OperationMapperImpl dto;
     private BlockRepo blockRepo;
+    private PaletteRepo paletteRepo;
     @Override
     public List<OperationDTO> getOperation() {
         List<Operation>operations= operationRepository.findAll();
@@ -65,12 +65,14 @@ public class OperationServiceImpl implements OperationService{
                     if(block !=null){
                         throw new BlockUsed("cet emplacement est deja utilise");
                     }
-                    Block block1=new Block();
-                    block1.setAllee(operation.getAllee());
-                    block1.setRangee(operation.getRangee());
-                    block1.setNiveau(operation.getNiveau());
-                    block1.setDepot(operation.getDepot());
-                    block1.setQuantite(operation.getQuantite());
+                    Block block1= Block.builder()
+                            .allee(operation.getAllee())
+                            .rangee(operation.getRangee())
+                            .niveau(operation.getNiveau())
+                            .depot(operation.getDepot())
+                            .quantite(operation.getQuantite())
+                            .build();
+
                     article.setQuantite_Article(article.getQuantite_Article()+operation.getQuantite());
                     depot.setQuantiteActuelle(depot.getQuantiteActuelle()+operation.getQuantite());
                     blockRepo.save(block1);
@@ -88,7 +90,6 @@ public class OperationServiceImpl implements OperationService{
                     article.setQuantite_Article(article.getQuantite_Article()-operation.getQuantite());
                     depot.setQuantiteActuelle(depot.getQuantiteActuelle()-operation.getQuantite());
                 }
-
             depotRepository.save(depot);
             articleRepository.save(article);
             operationRepository.save(operation);
@@ -99,12 +100,6 @@ public class OperationServiceImpl implements OperationService{
 public OperationDTO updateOperation(OperationDTO operationDTO) throws QuantiteInsufficient, DepotMax, BlockUsed {
     Operation operation = dto.fromOperationDTO(operationDTO) ;
     Block block = blockRepo.findBlockByAlleeAndRangeeAndNiveauAndDepot(operation.getAllee(), operation.getRangee(), operation.getNiveau(), operation.getDepot());
-
-    // Update operation properties
-//        operation.setQuantite(operationDTO.getQuantite());
-//        operation.setAllee(operationDTO.getAllee());
-//        operation.setRangee(operationDTO.getRangee());
-//        operation.setNiveau(operationDTO.getNiveau());
     operation.setDateOpertaion(new Date());
 
     // Update related entities if necessary
@@ -327,10 +322,20 @@ public OperationDTO updateOperation(OperationDTO operationDTO) throws QuantiteIn
         List<Operation> operations= operationRepository.findOperationsByDepot(depot);
         return operations.stream().map(op->dto.fromOperation(op)).toList();
     }
-
-    public boolean blockExists(Block block) {
-        Optional<Block> existingBlock = blockRepo.findById(block.getId_Block());
-        return existingBlock.isPresent();
+    @Override
+    public EntreeDTO nombreDop(int code_Article, int qte){
+        int nbrMax=paletteRepo.findPaletteBySizeArticle(articleRepository.findById(code_Article).get().getSize()).getQuantiteMax();
+        EntreeDTO entreeDTO=EntreeDTO.builder()
+                .nombre(Math.ceilDiv(qte,nbrMax))
+                .build();
+        List<Integer>quantites=new ArrayList<>();
+        while(qte>nbrMax){
+            quantites.add(nbrMax);
+            qte=qte-nbrMax;
+        }
+        quantites.add(qte);
+        entreeDTO.setQuantites(quantites);
+        return entreeDTO;
     }
 
 

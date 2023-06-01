@@ -2,19 +2,16 @@ package com.example.aveiro_project;
 
 import com.example.aveiro_project.Entities.*;
 import com.example.aveiro_project.Enums.*;
-import com.example.aveiro_project.Exceptions.DepotMax;
 import com.example.aveiro_project.Repository.*;
+import com.example.aveiro_project.Services.PaletteService;
 import lombok.extern.slf4j.Slf4j;
-import org.hibernate.query.sqm.ConstructorEntityArgumentMode;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import java.util.stream.Stream;
 @Slf4j
 @SpringBootApplication
@@ -29,7 +26,8 @@ public class AveiroProjectApplication {
 							OperationRepository operationRepository,
 							ArticleRepository articleRepository,
 							FamilleRepo familleRepo,
-							BlockRepo blockRepo ){
+							BlockRepo blockRepo,
+							PaletteService paletteService){
 		return args -> {
 			Stream.of("Adnan", "Ahmed", "Mourad","Othman").forEach(name->{
 				Personne personne= new Personne();
@@ -50,7 +48,7 @@ public class AveiroProjectApplication {
 			});
 
 			// FAMILLES
-			Ingredient ingredient1 =new Ingredient();
+			Ingredient ingredient1 =new Ingredient() ;
 			ingredient1.setNom("huile_d'olive");
 			Ingredient ingredient2 =new Ingredient();
 			ingredient2.setNom("sauce_tomate");
@@ -81,60 +79,72 @@ public class AveiroProjectApplication {
 
 //LES ARTICLES
 
-			Article Joly =new Article();
-			Joly.setIngredient(ingredient1);
-			Joly.setNature(nature1);
-			Joly.setQualite(qualite1);
-			Joly.setMarque(marque1);
-			Joly.setDesigniation("HO JOLLY MAQ BM MarPr");
-			Joly.setQuantite_Article(0);
+			Article Joly =Article.builder()
+					.ingredient(ingredient1)
+					.nature(nature1)
+					.qualite(qualite1)
+					.marque(marque1)
+					.designiation("HO JOLLY MAQ BM MarPr")
+					.quantite_Article(0)
+					.build();
+
 			articleRepository.save(Joly);
 
-			Article Jolly =new Article();
-			Jolly.setIngredient(ingredient2);
-			Jolly.setNature(nature);
-			Jolly.setQualite(qualite);
-			Jolly.setMarque(marque);
-			Jolly.setDesigniation("HV JOLLY MAQ BM MarPr");
-			Jolly.setQuantite_Article(0);
+			Article Jolly =Article.builder()
+					.ingredient(ingredient2)
+					.nature(nature)
+					.qualite(qualite)
+					.marque(marque)
+					.designiation("HV JOLLY MAQ BM MarPr")
+					.quantite_Article(0)
+					.build();
+
 			articleRepository.save(Jolly);
 
-			Article Lukus =new Article();
-			Lukus.setIngredient(ingredient1);
-			Lukus.setNature(nature);
-			Lukus.setQualite(qualite2);
-			Lukus.setMarque(marque);
-			Lukus.setDesigniation("HO LUKUS SAR M MarCl");
-			Lukus.setQuantite_Article(0);
+			Article Lukus =Article.builder()
+					.ingredient(ingredient1)
+					.nature(nature)
+					.qualite(qualite2)
+					.marque(marque)
+					.designiation("HO LUKUS SAR M MarCl")
+					.quantite_Article(0)
+					.build();
+
 			articleRepository.save(Lukus);
 
-			Article Lukuss =new Article();
-			Lukuss.setIngredient(ingredient2);
-			Lukuss.setNature(nature1);
-			Lukuss.setQualite(qualite2);
-			Lukuss.setMarque(marque1);
-			Lukuss.setDesigniation("ST LUKUS THON M MarCl");
-			Lukuss.setQuantite_Article(0);
+			Article Lukuss =Article.builder()
+					.ingredient(ingredient2)
+					.nature(nature1)
+					.qualite(qualite2)
+					.marque(marque1)
+					.designiation("ST LUKUS THON M MarCl")
+					.quantite_Article(0)
+					.build();
+
 			articleRepository.save(Lukuss);
 			
 //DEPOTS
-			Depot depotEmballage =new Depot();
-			depotEmballage.setNom_Depot("Depot Emballage");
-			depotEmballage.setQauntiteMax(100000);
-			depotEmballage.setNbrMaxAllee(11);
-			depotEmballage.setNbrMaxNiveau(5);
-			depotEmballage.setNbrMaxRangee(20);
-			depotEmballage.setQuantiteActuelle(0);
+			Depot depotEmballage = Depot.builder()
+					.nom_Depot("Depot Emballage")
+					.qauntiteMax(100000)
+					.nbrMaxAllee(11)
+					.nbrMaxNiveau(5)
+					.nbrMaxRangee(20)
+					.quantiteActuelle(0)
+					.build();
+
 			depotRepository.save(depotEmballage);
 
 
-			Depot depotPrFini =new Depot();
-			depotPrFini.setNom_Depot("Depot Produit Fini");
-			depotPrFini.setQauntiteMax(100000);
-			depotPrFini.setNbrMaxAllee(11);
-			depotPrFini.setNbrMaxNiveau(5);
-			depotPrFini.setNbrMaxRangee(20);
-			depotPrFini.setQuantiteActuelle(0);
+			Depot depotPrFini = Depot.builder()
+					.nom_Depot("Depot Produit Fini")
+					.qauntiteMax(100000)
+					.nbrMaxAllee(11)
+					.nbrMaxNiveau(5)
+					.nbrMaxRangee(20)
+					.quantiteActuelle(0)
+					.build();
+
 			depotRepository.save(depotPrFini);
 
 //LES OPERATIONS
@@ -232,6 +242,30 @@ public class AveiroProjectApplication {
 			depotRepository.save(depotPrFini);
 
 
+
+			//PALETTES
+
+			Palette palette_Big =Palette.builder()
+					.codePalette(1)
+					.sizeArticle(SizeArticle.Big)
+					.quantiteMax(3000)
+					.build();
+
+			Palette palette_Medium= Palette.builder()
+					.codePalette(2)
+					.sizeArticle(SizeArticle.Medium)
+					.quantiteMax(4000)
+					.build();
+
+			Palette palette_Small=Palette.builder()
+					.codePalette(3)
+					.sizeArticle(SizeArticle.Small)
+					.quantiteMax(5000)
+					.build();
+
+			paletteService.updatePalette(palette_Small);
+			paletteService.updatePalette(palette_Big);
+			paletteService.updatePalette(palette_Medium);
 		};
 
 	}

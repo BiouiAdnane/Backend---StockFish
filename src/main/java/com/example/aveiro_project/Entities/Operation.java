@@ -3,6 +3,7 @@ import com.example.aveiro_project.Enums.TypeOp;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -12,6 +13,7 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@Builder
 public class Operation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
