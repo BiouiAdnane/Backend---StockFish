@@ -20,7 +20,7 @@ public class AveiroProjectApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(AveiroProjectApplication.class, args);
 	}
-	@Bean
+//	@Bean
 	CommandLineRunner start(PersonneRepository personneRepository,
 							DepotRepository depotRepository,
 							OperationRepository operationRepository,
