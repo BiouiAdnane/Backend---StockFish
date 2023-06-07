@@ -20,7 +20,7 @@ public class AveiroProjectApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(AveiroProjectApplication.class, args);
 	}
-	//@Bean
+	@Bean
 	CommandLineRunner start(PersonneRepository personneRepository,
 							DepotRepository depotRepository,
 							OperationRepository operationRepository,
@@ -29,7 +29,7 @@ public class AveiroProjectApplication {
 							BlockRepo blockRepo,
 							PaletteService paletteService){
 		return args -> {
-			Stream.of("Adnan", "Ahmed", "Mourad","Othman").forEach(name->{
+			Stream.of("Adnan", "Ahmed", "Mourad").forEach(name->{
 				Personne personne= new Personne();
 				personne.setNom(name);
 				personne.setPrenom(name +"aoui");
@@ -42,7 +42,6 @@ public class AveiroProjectApplication {
 					personne.setTypeEmploye(TypeEmploye.Gestionaire_Emballage);
 				else if (personne.getNom()=="Mourad")
 					personne.setTypeEmploye(TypeEmploye.Gestionaire_ProduitFini);
-				else personne.setTypeEmploye(TypeEmploye.Superviseur);
 				personneRepository.save(personne);
 
 			});
@@ -86,6 +85,8 @@ public class AveiroProjectApplication {
 					.marque(marque1)
 					.designiation("HO JOLLY MAQ BM MarPr")
 					.quantite_Article(0)
+					.size(SizeArticle.Small)
+					.typeArticle(TypeArticle.Carton)
 					.build();
 
 			articleRepository.save(Joly);
@@ -97,6 +98,8 @@ public class AveiroProjectApplication {
 					.marque(marque)
 					.designiation("HV JOLLY MAQ BM MarPr")
 					.quantite_Article(0)
+					.size(SizeArticle.Medium)
+					.typeArticle(TypeArticle.Etui)
 					.build();
 
 			articleRepository.save(Jolly);
@@ -108,6 +111,8 @@ public class AveiroProjectApplication {
 					.marque(marque)
 					.designiation("HO LUKUS SAR M MarCl")
 					.quantite_Article(0)
+					.size(SizeArticle.Big)
+					.typeArticle(TypeArticle.Produit_Fini)
 					.build();
 
 			articleRepository.save(Lukus);
@@ -119,6 +124,8 @@ public class AveiroProjectApplication {
 					.marque(marque1)
 					.designiation("ST LUKUS THON M MarCl")
 					.quantite_Article(0)
+					.size(SizeArticle.Small)
+					.typeArticle(TypeArticle.Produit_Fini)
 					.build();
 
 			articleRepository.save(Lukuss);
@@ -126,7 +133,6 @@ public class AveiroProjectApplication {
 //DEPOTS
 			Depot depotEmballage = Depot.builder()
 					.nom_Depot("Depot Emballage")
-					.qauntiteMax(100000)
 					.nbrMaxAllee(11)
 					.nbrMaxNiveau(5)
 					.nbrMaxRangee(20)
@@ -138,7 +144,6 @@ public class AveiroProjectApplication {
 
 			Depot depotPrFini = Depot.builder()
 					.nom_Depot("Depot Produit Fini")
-					.qauntiteMax(100000)
 					.nbrMaxAllee(11)
 					.nbrMaxNiveau(5)
 					.nbrMaxRangee(20)
