@@ -79,6 +79,8 @@ public class AveiroProjectApplication {
 //LES ARTICLES
 
 			Article Joly =Article.builder()
+					.size(SizeArticle.Small)
+					.typeArticle(TypeArticle.Produit_Fini)
 					.ingredient(ingredient1)
 					.nature(nature1)
 					.qualite(qualite1)
@@ -92,6 +94,8 @@ public class AveiroProjectApplication {
 			articleRepository.save(Joly);
 
 			Article Jolly =Article.builder()
+					.size(SizeArticle.Big)
+					.typeArticle(TypeArticle.Couverle)
 					.ingredient(ingredient2)
 					.nature(nature)
 					.qualite(qualite)
@@ -105,6 +109,8 @@ public class AveiroProjectApplication {
 			articleRepository.save(Jolly);
 
 			Article Lukus =Article.builder()
+					.size(SizeArticle.Medium)
+					.typeArticle(TypeArticle.Produit_Fini)
 					.ingredient(ingredient1)
 					.nature(nature)
 					.qualite(qualite2)
@@ -118,6 +124,8 @@ public class AveiroProjectApplication {
 			articleRepository.save(Lukus);
 
 			Article Lukuss =Article.builder()
+					.size(SizeArticle.Small)
+					.typeArticle(TypeArticle.Etui)
 					.ingredient(ingredient2)
 					.nature(nature1)
 					.qualite(qualite2)
@@ -133,6 +141,7 @@ public class AveiroProjectApplication {
 //DEPOTS
 			Depot depotEmballage = Depot.builder()
 					.nom_Depot("Depot Emballage")
+					.qauntiteMax(1100)
 					.nbrMaxAllee(11)
 					.nbrMaxNiveau(5)
 					.nbrMaxRangee(20)
@@ -144,6 +153,7 @@ public class AveiroProjectApplication {
 
 			Depot depotPrFini = Depot.builder()
 					.nom_Depot("Depot Produit Fini")
+					.qauntiteMax(1100)
 					.nbrMaxAllee(11)
 					.nbrMaxNiveau(5)
 					.nbrMaxRangee(20)
@@ -153,7 +163,7 @@ public class AveiroProjectApplication {
 			depotRepository.save(depotPrFini);
 
 //LES OPERATIONS
-			Operation operation=new Operation();
+			/*Operation operation=new Operation();
 			Block block=new Block();
 			operation.setQuantite(5666);
 			operation.setDepot(depotEmballage);
@@ -173,6 +183,7 @@ public class AveiroProjectApplication {
 			Jolly.setQuantite_Article(Jolly.getQuantite_Article()+operation.getQuantite());
 			operation.setPersonne(personneRepository.getReferenceById(1));
 			depotEmballage.setQuantiteActuelle(depotEmballage.getQuantiteActuelle()+operation.getQuantite());
+			depotEmballage.setQuantiteActuelle(blockRepo.countByIdBlock(depotEmballage.getCode_Depot()));
 			articleRepository.save(Jolly);
 			blockRepo.save(block);
 			operationRepository.save(operation);
@@ -193,7 +204,8 @@ public class AveiroProjectApplication {
 			depotEmballage.setQuantiteActuelle(depotEmballage.getQuantiteActuelle()-operation2.getQuantite());
 			operation2.setPersonne(personneRepository.getReferenceById(1));
 			Jolly.setQuantite_Article(Jolly.getQuantite_Article()-operation2.getQuantite());
-			blockRepo.delete(block2);
+			depotEmballage.setQuantiteActuelle(blockRepo.countByIdBlock(depotEmballage.getCode_Depot()));
+			blockRepo.save(block2);
 			articleRepository.save(Jolly);
 			operationRepository.save(operation2);
 			depotRepository.save(depotEmballage);
@@ -217,6 +229,7 @@ public class AveiroProjectApplication {
 			depotPrFini.setQuantiteActuelle(depotPrFini.getQuantiteActuelle()+operation3.getQuantite());
 			operation3.setPersonne(personneRepository.getReferenceById(1));
 			Lukuss.setQuantite_Article(Lukus.getQuantite_Article()+operation3.getQuantite());
+			depotPrFini.setQuantiteActuelle(blockRepo.countByIdBlock(depotPrFini.getCode_Depot()));
 			articleRepository.save(Lukuss);
 			operationRepository.save(operation3);
 			blockRepo.save(block3);
@@ -241,10 +254,11 @@ public class AveiroProjectApplication {
 			depotPrFini.setQuantiteActuelle(depotPrFini.getQuantiteActuelle()+operation4.getQuantite());
 			Lukuss.setQuantite_Article(Lukuss.getQuantite_Article()+operation4.getQuantite());
 			operation4.setPersonne(personneRepository.getReferenceById(2));
-			blockRepo.save(block4);
+			depotPrFini.setQuantiteActuelle(blockRepo.countByIdBlock(depotPrFini.getCode_Depot()));
+			blockRepo.delete(block4);
 			articleRepository.save(Lukuss);
 			operationRepository.save(operation4);
-			depotRepository.save(depotPrFini);
+			depotRepository.save(depotPrFini);*/
 
 
 

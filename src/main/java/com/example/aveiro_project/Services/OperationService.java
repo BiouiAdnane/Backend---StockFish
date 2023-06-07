@@ -15,7 +15,7 @@ import java.util.List;
 public interface OperationService {
     List<OperationDTO> getOperation();
 
-    OperationDTO saveOperation(OperationDTO operationDTO) throws QuantiteInsufficient, DepotMax, BlockUsed;
+    OperationDTO saveOperation(OperationDTO operationDTO) throws QuantiteInsufficient, BlockUsed;
 
     OperationDTO getOperationId(int operationId) ;
 

@@ -48,7 +48,7 @@ public class OperationServiceImpl implements OperationService{
     }
 
     @Override
-    public OperationDTO saveOperation(OperationDTO operationDTO) throws QuantiteInsufficient, DepotMax, BlockUsed {
+    public OperationDTO saveOperation(OperationDTO operationDTO) throws QuantiteInsufficient, BlockUsed {
         Operation operation=dto.fromOperationDTO(operationDTO);
         Block block = blockRepo.findBlockByAlleeAndRangeeAndNiveauAndDepot(operation.getAllee(), operation.getRangee(), operation.getNiveau(), operation.getDepot());
             log.info("Saving New Operation");
@@ -60,8 +60,8 @@ public class OperationServiceImpl implements OperationService{
                 Article article = opArticle.get();
                 Depot depot = opDepo.get();
                 if(operation.getTypeOpr()==TypeOp.E){
-                    if (operation.getQuantite()+depot.getQuantiteActuelle()>depot.getQauntiteMax())
-                        throw new DepotMax("quantite max depasse");
+//                    if (operation.getQuantite()+depot.getQuantiteActuelle()>depot.getQauntiteMax())
+//                        throw new DepotMax("quantite max depasse");
                     if(block !=null){
                         throw new BlockUsed("cet emplacement est deja utilise");
                     }
@@ -90,6 +90,7 @@ public class OperationServiceImpl implements OperationService{
                     article.setQuantite_Article(article.getQuantite_Article()-operation.getQuantite());
                     depot.setQuantiteActuelle(depot.getQuantiteActuelle()-operation.getQuantite());
                 }
+            depot.setQuantiteActuelle(blockRepo.countByIdBlock(depot.getCode_Depot()));
             depotRepository.save(depot);
             articleRepository.save(article);
             operationRepository.save(operation);
