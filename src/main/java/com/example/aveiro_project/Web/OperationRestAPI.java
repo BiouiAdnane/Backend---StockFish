@@ -21,7 +21,7 @@ public class OperationRestAPI {
     }
 
     @PostMapping("/operations")
-    public OperationDTO saveOperation(@RequestBody OperationDTO operationDTO) throws QuantiteInsufficient, DepotMax, BlockUsed {
+    public OperationDTO saveOperation(@RequestBody OperationDTO operationDTO) throws QuantiteInsufficient, BlockUsed {
 
 
         return operationService.saveOperation(operationDTO);
