@@ -2,10 +2,7 @@ package com.example.aveiro_project.Services;
 
 import com.example.aveiro_project.DTOS.EntreeDTO;
 import com.example.aveiro_project.DTOS.OperationDTO;
-import com.example.aveiro_project.Entities.Article;
-import com.example.aveiro_project.Entities.Block;
-import com.example.aveiro_project.Entities.Depot;
-import com.example.aveiro_project.Entities.Operation;
+import com.example.aveiro_project.Entities.*;
 import com.example.aveiro_project.Enums.TypeOp;
 import com.example.aveiro_project.Exceptions.BlockUsed;
 import com.example.aveiro_project.Exceptions.DepotMax;
@@ -19,10 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -338,6 +332,92 @@ public OperationDTO updateOperation(OperationDTO operationDTO) throws QuantiteIn
         entreeDTO.setQuantites(quantites);
         return entreeDTO;
     }
+
+
+    public Map<String, Map<String, Integer>> getTotalOperationsByDay(int code_Depot, int month, int year) {
+        Map<String, Map<String, Integer>> operationsByDay = new HashMap<>();
+        // Obtenir le calendrier pour le mois et l'année spécifiés
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.YEAR, year);
+        calendar.set(Calendar.MONTH, month - 1); // Notez que les mois commencent à 0 dans Calendar
+        int daysInMonth = calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
+        // Boucle à travers chaque jour du mois
+        for (int day = 1; day <= daysInMonth; day++) {
+            // Obtenir la date du jour courant
+            calendar.set(Calendar.DAY_OF_MONTH, day);
+            java.sql.Date currentDate = new java.sql.Date(calendar.getTimeInMillis());
+            // Obtenir les opérations entrées et sorties pour le jour courant
+            int totalEntries = operationRepository.countOperationsByCodeDepotAndDateAndTypeOp(code_Depot, currentDate, TypeOp.E);
+            int totalExits = operationRepository.countOperationsByCodeDepotAndDateAndTypeOp(code_Depot, currentDate, TypeOp.S);
+            // Créer une nouvelle entrée dans la carte avec le jour et les totaux correspondants
+            Map<String, Integer> dayOperations = new HashMap<>();
+            dayOperations.put("entrees", totalEntries);
+            dayOperations.put("sorties", totalExits);
+            operationsByDay.put(currentDate.toString(), dayOperations);
+        }
+        return operationsByDay;
+    }
+    @Override
+    public OperationResponse getArticleOperations(String codeDepot, int month, int year) {
+        OperationResponse response = new OperationResponse();
+
+        // Obtenez le premier jour et le dernier jour du mois
+        LocalDate startDate = LocalDate.of(year, month, 1);
+        LocalDate endDate = startDate.withDayOfMonth(startDate.lengthOfMonth());
+
+        List<LocalDate> allDates = new ArrayList<>();
+        LocalDate currentDate = startDate;
+
+        // Ajoutez tous les jours du mois à la liste
+        while (!currentDate.isAfter(endDate)) {
+            allDates.add(currentDate);
+            currentDate = currentDate.plusDays(1);
+        }
+
+        List<Object[]> articleEntreesData = operationRepository.getArticleEntrees(codeDepot, month, year);
+        List<Object[]> articleSortiesData = operationRepository.getArticleSorties(codeDepot, month, year);
+
+        Map<String, Integer> articleEntreesMap = new HashMap<>();
+        Map<String, Integer> articleSortiesMap = new HashMap<>();
+
+        // Initialiser les quantités totales à zéro pour toutes les dates
+        for (LocalDate date : allDates) {
+            String formattedDate = date.toString(); // Utilisez directement la date au format ISO yyyy-MM-dd
+            articleEntreesMap.put(formattedDate, 0);
+            articleSortiesMap.put(formattedDate, 0);
+        }
+
+        // Mettre à jour les quantités totales avec les valeurs obtenues de la requête
+        for (Object[] data : articleEntreesData) {
+            String date = data[0].toString().split(" ")[0]; // Récupérer uniquement la partie de la date sans les heures, minutes et secondes
+            int quantite = Integer.parseInt(data[1].toString());
+            articleEntreesMap.put(date, quantite);
+        }
+
+        for (Object[] data : articleSortiesData) {
+            String date = data[0].toString().split(" ")[0]; // Récupérer uniquement la partie de la date sans les heures, minutes et secondes
+            int quantite = Integer.parseInt(data[1].toString());
+            articleSortiesMap.put(date, quantite);
+        }
+
+        // Construire les listes finales de dates et de quantités
+        List<Integer> articleEntreesList = new ArrayList<>();
+        List<Integer> articleSortiesList = new ArrayList<>();
+
+        for (LocalDate date : allDates) {
+            String formattedDate = date.toString(); // Utilisez directement la date au format ISO yyyy-MM-dd
+            articleEntreesList.add(articleEntreesMap.get(formattedDate));
+            articleSortiesList.add(articleSortiesMap.get(formattedDate));
+        }
+
+        response.setDates(allDates.stream().map(LocalDate::toString).collect(Collectors.toList()));
+        response.setArticleEntrees(articleEntreesList);
+        response.setArticleSorties(articleSortiesList);
+
+        return response;
+    }
+
+
 
 
 }

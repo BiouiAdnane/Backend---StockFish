@@ -9,7 +9,8 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-public interface ArticleRepository extends JpaRepository<Article,Integer > {
+    public interface ArticleRepository extends JpaRepository<Article,Integer > {
     @Query("select a from Article a where a.designiation like :kw")
     List<Article> searchArticle(@Param(value = "kw") String keyword);
+    int countArticleByDesigniationIsNotNull();
 }

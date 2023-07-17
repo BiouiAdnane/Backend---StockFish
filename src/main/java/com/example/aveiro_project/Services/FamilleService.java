@@ -9,4 +9,5 @@ public interface FamilleService {
     public Famille getFamille(int id);
     public Famille updateFamille(Famille famille);
     public List<Famille> findByNom(String kw);
+    int countFamille();
 }

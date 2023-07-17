@@ -4,6 +4,7 @@ import com.example.aveiro_project.DTOS.EntreeDTO;
 import com.example.aveiro_project.DTOS.OperationDTO;
 import com.example.aveiro_project.Entities.Operation;
 import com.example.aveiro_project.Enums.TypeOp;
+import com.example.aveiro_project.Entities.OperationResponse;
 import com.example.aveiro_project.Exceptions.BlockUsed;
 import com.example.aveiro_project.Exceptions.DepotMax;
 import com.example.aveiro_project.Exceptions.QuantiteInsufficient;
@@ -11,6 +12,7 @@ import com.example.aveiro_project.Exceptions.QuantiteInsufficient;
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 public interface OperationService {
     List<OperationDTO> getOperation();
@@ -49,4 +51,9 @@ public interface OperationService {
     List<OperationDTO> listerOpDepot(int id);
 
     EntreeDTO nombreDop(int code_Article, int qte);
+
+    Map<String, Map<String, Integer>> getTotalOperationsByDay(int code_Depot, int month, int year);
+
+    OperationResponse getArticleOperations(String codeDepot, int month, int year);
+
 }

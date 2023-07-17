@@ -32,7 +32,10 @@ public class FamilleRestAPI {
     public Famille findFamilleById(@PathVariable int id){
         return familleService.getFamille(id);
     }
-
+    @GetMapping("/familles/count")
+    public int countFamilles(){
+        return familleService.countFamille();
+    }
 
 
 

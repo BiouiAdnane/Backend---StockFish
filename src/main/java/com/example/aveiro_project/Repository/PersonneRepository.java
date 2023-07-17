@@ -12,4 +12,6 @@ public interface PersonneRepository extends JpaRepository<Personne, Integer> {
     @Query("select p from Personne p where p.prenom like :kw")
     List<Personne> searchPersonne(@Param(value = "kw") String keyword);
 //    List<Personne> findPersonnesByPrenomContains(String kw);
+
+    int countAllByMatriculationIsNotNull();
 }

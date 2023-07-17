@@ -16,4 +16,5 @@ public interface PersonneService {
 
     void deletePersonne(int personneId);
     List<Personne> searchPersonne(String keyword);
+    int countPersonne();
 }

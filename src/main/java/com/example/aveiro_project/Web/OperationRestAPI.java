@@ -2,6 +2,7 @@ package com.example.aveiro_project.Web;
 
 import com.example.aveiro_project.DTOS.EntreeDTO;
 import com.example.aveiro_project.DTOS.OperationDTO;
+import com.example.aveiro_project.Entities.OperationResponse;
 import com.example.aveiro_project.Enums.TypeOp;
 import com.example.aveiro_project.Exceptions.BlockUsed;
 import com.example.aveiro_project.Exceptions.DepotMax;
@@ -10,8 +11,8 @@ import com.example.aveiro_project.Services.OperationService;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Date;
-import java.util.List;
+import java.util.*;
+
 @RestController
 @CrossOrigin("*")
 public class OperationRestAPI {
@@ -102,4 +103,90 @@ public class OperationRestAPI {
                                 @PathVariable int qte){
         return operationService.nombreDop(code_Article, qte);
     }
+
+    @GetMapping("/operations/depots/{code_Depot}/{month}/{year}")
+    public Map<String, List<?>> getOperationsByDepotAndMonthAndYear(
+            @PathVariable("code_Depot") int code_Depot,
+            @PathVariable("month") int month,
+            @PathVariable("year") int year
+    ) {
+        Map<String, Map<String, Integer>> operationsByDay = operationService.getTotalOperationsByDay(code_Depot, month, year);
+
+        List<DayData> dayDataList = new ArrayList<>();
+
+        for (Map.Entry<String, Map<String, Integer>> entry : operationsByDay.entrySet()) {
+            String date = entry.getKey();
+            Map<String, Integer> dayOperations = entry.getValue();
+
+            int entries = dayOperations.getOrDefault("entrees", 0);
+            int outputs = dayOperations.getOrDefault("sorties", 0);
+
+            DayData dayData = new DayData(date, entries, outputs);
+            dayDataList.add(dayData);
+        }
+
+        // Triez la liste des objets DayData en fonction des dates
+        Collections.sort(dayDataList);
+
+        List<String> dates = new ArrayList<>();
+        List<Integer> entrees = new ArrayList<>();
+        List<Integer> sorties = new ArrayList<>();
+
+        for (DayData dayData : dayDataList) {
+            dates.add(dayData.getDate());
+            entrees.add(dayData.getEntries());
+            sorties.add(dayData.getOutputs());
+        }
+
+        Map<String, List<?>> response = new HashMap<>();
+        response.put("dates", dates);
+        response.put("entrees", entrees);
+        response.put("sorties", sorties);
+
+        return response;
+    }
+
+    // Classe personnalisée pour représenter les données d'une journée
+    class DayData implements Comparable<DayData> {
+        private String date;
+        private int entries;
+        private int outputs;
+
+        public DayData(String date, int entries, int outputs) {
+            this.date = date;
+            this.entries = entries;
+            this.outputs = outputs;
+        }
+
+        public String getDate() {
+            return date;
+        }
+
+        public int getEntries() {
+            return entries;
+        }
+
+        public int getOutputs() {
+            return outputs;
+        }
+
+        @Override
+        public int compareTo(DayData other) {
+            // Compare les dates pour le tri croissant
+            return this.date.compareTo(other.date);
+        }
+    }
+
+
+    @GetMapping("/operations/articles/{code_Depot}/{month}/{year}")
+    public OperationResponse getArticleOperations(
+            @PathVariable("code_Depot") String codeDepot,
+            @PathVariable("month") int month,
+            @PathVariable("year") int year) {
+
+        return operationService.getArticleOperations(codeDepot, month, year);
+    }
+
+
+
 }

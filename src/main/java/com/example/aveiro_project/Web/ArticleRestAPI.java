@@ -41,4 +41,8 @@ public class ArticleRestAPI {
     public List<Article> searchArticle(@RequestParam(name = "keyword" , defaultValue = "") String keyword){
         return articleService.searchArticle("%"+keyword+"%");
     }
+    @GetMapping("/articles/count")
+    public int countArticle(){
+        return articleService.countArticle();
+    }
 }

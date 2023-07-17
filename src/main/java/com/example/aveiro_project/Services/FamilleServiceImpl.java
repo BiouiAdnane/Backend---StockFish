@@ -31,5 +31,10 @@ public class FamilleServiceImpl implements FamilleService {
         return familleRepo.findFamilleByNomContaining(kw);
     }
 
+    @Override
+    public int countFamille() {
+        return familleRepo.countFamilleByNomNotNull();
+    }
+
 
 }

@@ -8,4 +8,6 @@ import java.util.List;
 
 public interface FamilleRepo extends JpaRepository<Famille,Integer> {
     List<Famille> findFamilleByNomContaining(String kw);
+
+    int countFamilleByNomNotNull();
 }

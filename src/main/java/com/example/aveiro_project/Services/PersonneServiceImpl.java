@@ -58,6 +58,9 @@ public class PersonneServiceImpl implements PersonneService{
         List<Personne> personnes = personneRepository.searchPersonne(keyword) ;
         return personnes;
     }
-
+    @Override
+    public int countPersonne() {
+        return personneRepository.countAllByMatriculationIsNotNull();
+    }
 
 }

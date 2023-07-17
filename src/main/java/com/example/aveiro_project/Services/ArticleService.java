@@ -13,4 +13,5 @@ public interface ArticleService {
     public void deleteArticle(int id);
     public Article updateArticle(Article article) throws ArticleNotFoundException;
     List<Article> searchArticle(String keyword);
+    int countArticle();
 }

@@ -48,4 +48,8 @@ public class ArticleServiceImpl implements ArticleService{
         List<Article> articles = articleRepository.searchArticle(keyword) ;
         return articles;
     }
+    @Override
+    public int countArticle() {
+        return articleRepository.countArticleByDesigniationIsNotNull();
+    }
 }

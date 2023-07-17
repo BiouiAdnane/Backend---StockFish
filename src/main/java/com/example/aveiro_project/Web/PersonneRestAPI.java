@@ -47,4 +47,8 @@ public class PersonneRestAPI {
     public List<Personne> searchUtilisateur(@RequestParam(name = "keyword" , defaultValue = "") String keyword){
         return personneService.searchPersonne("%"+keyword+"%");
     }
+    @GetMapping("/personnes/count")
+    public int countPersonne(){
+        return  personneService.countPersonne();
+    }
 }
