@@ -34,7 +34,12 @@ Une attention particulière est portée à l'optimisation du stockage. Lors de c
 
 L'application organise le stockage dans les dépôts en trois dimensions : les **allées**, les **rangées**, et les **niveaux**. Chaque combinaison de ces trois éléments désigne un emplacement précis pour un bloc de stockage.
 
-![Classification des Dépôts](./image/Depot-classification.png)
+<div align="center">
+  
+  ![Classification des Dépôts](./Depot-classification.png)
+  
+</div>
+
 
 - **Allées** : Représentent les sections principales du dépôt (par exemple, Allée 1, Allée 2, etc.).
 - **Rangées** : Désignent les colonnes ou les divisions horizontales à l'intérieur de chaque allée (par exemple, Rangée B, Rangée C, etc.).
