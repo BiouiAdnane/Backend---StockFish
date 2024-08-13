@@ -47,6 +47,20 @@ L'application organise le stockage dans les dépôts en trois dimensions : les *
 
 Cette classification permet une gestion extrêmement précise et optimisée du stock, assurant que chaque article est facilement localisable et accessible.
 
+### 📊 Extraction des Clés d'Identification de Performance (KPI)
+
+L'application **StockFish** inclut une fonctionnalité avancée d'**extraction des KPI** (Key Performance Indicators) pour surveiller et améliorer les performances de la gestion du stock. Ces indicateurs sont présentés sous forme de graphiques interactifs, offrant une visualisation claire et concise des données cruciales, telles que :
+
+- **Nombre d'utilisateurs total** : Suivi du nombre total d'utilisateurs actifs sur la plateforme.
+- **Nombre total d'articles** : Indicateur du nombre total d'articles gérés dans l'ensemble des dépôts.
+- **Nombre de familles utilisées** : Compte les différentes familles d'articles (marque, ingrédient, qualité, nature de poisson) utilisées dans l'application.
+- **Quantité actuelle dans les dépôts d'emballage et de produit fini** : Mesure la quantité de stock disponible dans les dépôts dédiés aux emballages et aux produits finis.
+- **Nombre d'opérations E/S par dépôt quotidiennement** : Suivi du nombre d'entrées et sorties (E/S) réalisées quotidiennement dans chaque dépôt.
+- **Quantité totale des articles E/S par dépôt quotidiennement** : Évalue la quantité totale des articles entrés et sortis dans chaque dépôt sur une base quotidienne.
+
+Ces KPI sont essentiels pour permettre aux gestionnaires d'entrepôts et aux responsables logistiques de prendre des décisions éclairées, d'améliorer les processus, et de garantir une gestion optimale des stocks.
+
+
 ## 🔗 Lien vers la Partie Frontend
 
 👉 Pour une expérience complète, consulte également la partie **frontend** de l'application : [Frontend - StockFish](https://github.com/BiouiAdnane/Frontend---StockFish).
