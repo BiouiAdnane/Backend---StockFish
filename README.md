@@ -65,3 +65,6 @@ Ces KPI sont essentiels pour permettre aux gestionnaires d'entrepôts et aux res
 
 👉 Pour une expérience complète, consulte également la partie **frontend** de l'application : [Frontend - StockFish](https://github.com/BiouiAdnane/Frontend---StockFish).
 
+## 📝 Licence
+
+Ce projet est licencié sous la licence MIT - voir le fichier [LICENSE](LICENSE) pour plus de détails.
